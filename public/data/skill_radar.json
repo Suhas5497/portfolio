@@ -1,0 +1,7 @@
+[
+  { "skill": "Python", "level": 90 },
+  { "skill": "SQL", "level": 92 },
+  { "skill": "Machine Learning", "level": 82 },
+  { "skill": "Visualization", "level": 85 },
+  { "skill": "Business Analytics", "level": 80 }
+]

@@ -25,7 +25,7 @@ const stackBadges = ["SQL", "Python", "Machine Learning", "Power BI", "Excel"];
 
 const DEMO_URLS = {
   churn: "",
-  retail: "https://sales-intelligence-platform-dovb9bnzxw69tvcorxpqqz.streamlit.app/",
+  retail: "",
 };
 
 const heroVariants = {

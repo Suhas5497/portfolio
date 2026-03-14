@@ -37,7 +37,7 @@ const churnData = [
 
 const DEMO_URLS = {
   churn: "https://customer-churn-demo.streamlit.app",
-  retail: "https://retail-sales-dashboard.streamlit.app"
+  retail: "https://sales-intelligence-platform-dovb9bnzxw69tvcorxpqqz.streamlit.app/"
 };
 
 const navItems = [

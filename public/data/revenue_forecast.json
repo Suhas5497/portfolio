@@ -1,0 +1,10 @@
+[
+  { "day": "Day 1", "actual": 118, "forecast": 119 },
+  { "day": "Day 2", "actual": 122, "forecast": 121 },
+  { "day": "Day 3", "actual": 125, "forecast": 124 },
+  { "day": "Day 4", "actual": 129, "forecast": 128 },
+  { "day": "Day 5", "actual": 132, "forecast": 133 },
+  { "day": "Day 6", "forecast": 135 },
+  { "day": "Day 7", "forecast": 137 },
+  { "day": "Day 8", "forecast": 140 }
+]

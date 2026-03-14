@@ -1,24 +1,22 @@
 {
-  "name": "resilytics-portfolio",
+  "name": "suhas-portfolio",
   "version": "1.0.0",
   "private": true,
-  "description": "World-class interactive data analyst portfolio for Suhas Dhamapurkar, built with React, Tailwind CSS, Framer Motion, and Recharts.",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "dev": "next dev -p 3000 -H 0.0.0.0",
+    "build": "next build",
+    "start": "next start -p 3000 -H 0.0.0.0"
   },
   "dependencies": {
-    "framer-motion": "^11.0.0",
+    "next": "14.2.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "recharts": "^2.12.0"
+    "recharts": "^2.12.0",
+    "framer-motion": "^11.0.0"
   },
   "devDependencies": {
-    "@vitejs/plugin-react": "^4.0.0",
     "autoprefixer": "^10.4.18",
     "postcss": "^8.4.35",
-    "tailwindcss": "^3.4.3",
-    "vite": "^8.0.0"
+    "tailwindcss": "^3.4.3"
   }
 }

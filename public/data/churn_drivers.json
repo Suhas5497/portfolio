@@ -1,5 +1,5 @@
 [
-  { "feature": "Contract", "importance": 0.86 },
+  { "feature": "Contract Type", "importance": 0.86 },
   { "feature": "Tenure", "importance": 0.78 },
   { "feature": "Monthly Charges", "importance": 0.74 },
   { "feature": "Payment Method", "importance": 0.62 },

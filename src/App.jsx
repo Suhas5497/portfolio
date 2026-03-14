@@ -1,5 +1,5 @@
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   LineChart,
   Line,
@@ -16,16 +16,18 @@ import {
   Bar,
   CartesianGrid,
   Legend,
+  Area,
+  AreaChart,
 } from "recharts";
 import revenueForecastData from "./data/revenue_forecast.json";
 import churnDriversData from "./data/churn_drivers.json";
 import skillsRadarData from "./data/skills_radar.json";
 
-const stackBadges = ["SQL", "Python", "Machine Learning", "Power BI", "Excel"];
+const stackBadges = ["SQL", "Python", "Machine Learning", "Power BI", "Excel", "Tableau"];
 
 const DEMO_URLS = {
-  churn: "",
-  retail: "",
+  churn: "https://customer-churn-demo.streamlit.app",
+  retail: "https://retail-sales-dashboard.streamlit.app",
 };
 
 const heroVariants = {
@@ -51,7 +53,7 @@ function scrollToId(id) {
 
 function App() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-950 to-slate-900 text-slate-50">
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 via-white to-slate-50 text-slate-800">
       <Header />
       <main className="pt-16">
         <Hero />
@@ -65,34 +67,40 @@ function App() {
         <ResumeSection />
         <Contact />
       </main>
-      <footer className="border-t border-slate-800/80 py-4 text-center text-xs text-slate-500">
-        © {new Date().getFullYear()} Suhas Dhamapurkar · Data Analyst Portfolio
+      <footer className="border-t border-slate-200 bg-white py-6 text-center text-sm text-slate-500">
+        <div className="mx-auto max-w-6xl px-4">
+          <p>© {new Date().getFullYear()} Suhas Dhamapurkar · Data Analyst Portfolio</p>
+          <p className="mt-1 text-xs text-slate-400">Built with passion for data-driven insights</p>
+        </div>
       </footer>
     </div>
   );
 }
 
 function Header() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  
   return (
-    <header className="fixed inset-x-0 top-0 z-30 border-b border-slate-800/80 bg-slate-950/80 backdrop-blur">
+    <header className="fixed inset-x-0 top-0 z-30 border-b border-slate-200/80 bg-white/90 backdrop-blur-lg">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
         <div
-          className="flex cursor-pointer items-center gap-2"
+          className="flex cursor-pointer items-center gap-3"
           onClick={() => scrollToId("hero")}
+          data-testid="header-logo"
         >
-          <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-gradient-to-br from-sky-400 via-sky-500 to-indigo-500 text-xs font-semibold tracking-wide text-slate-950 shadow-lg shadow-sky-500/40">
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-500 text-sm font-bold tracking-wide text-white shadow-lg shadow-emerald-500/30">
             SD
           </div>
           <div>
-            <p className="text-xs font-semibold text-slate-200">
+            <p className="text-sm font-semibold text-slate-800">
               Suhas Dhamapurkar
             </p>
-            <p className="text-[0.65rem] text-slate-500">
+            <p className="text-xs text-slate-500">
               Data Analyst | Analytics Engineer
             </p>
           </div>
         </div>
-        <nav className="hidden items-center gap-5 text-xs text-slate-300 md:flex">
+        <nav className="hidden items-center gap-6 text-sm text-slate-600 md:flex">
           {[
             ["About", "about"],
             ["Platform", "platform"],
@@ -105,21 +113,61 @@ function Header() {
             <button
               key={id}
               onClick={() => scrollToId(id)}
-              className="relative transition hover:text-sky-400"
+              data-testid={`nav-${id}`}
+              className="relative font-medium transition-colors hover:text-emerald-600"
             >
               {label}
             </button>
           ))}
         </nav>
+        <button 
+          className="md:hidden p-2 rounded-lg hover:bg-slate-100"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          data-testid="mobile-menu-toggle"
+        >
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={mobileMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
+          </svg>
+        </button>
       </div>
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.nav 
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            className="md:hidden border-t border-slate-100 bg-white"
+          >
+            <div className="flex flex-col px-4 py-3 space-y-2">
+              {[
+                ["About", "about"],
+                ["Platform", "platform"],
+                ["Projects", "projects"],
+                ["Visuals", "visuals"],
+                ["Skills", "skills"],
+                ["GitHub", "github"],
+                ["Contact", "contact"],
+              ].map(([label, id]) => (
+                <button
+                  key={id}
+                  onClick={() => { scrollToId(id); setMobileMenuOpen(false); }}
+                  className="text-left py-2 px-3 rounded-lg text-slate-600 hover:bg-slate-50 hover:text-emerald-600 transition-colors"
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+          </motion.nav>
+        )}
+      </AnimatePresence>
     </header>
   );
 }
 
 function Hero() {
   return (
-    <section id="hero" className="border-b border-slate-800/80 bg-slate-950">
-      <div className="mx-auto flex max-w-6xl flex-col gap-10 px-4 pb-12 pt-20 md:flex-row md:items-center md:pb-16 md:pt-24">
+    <section id="hero" className="border-b border-slate-200/80 bg-gradient-to-br from-white via-slate-50 to-emerald-50/30">
+      <div className="mx-auto flex max-w-6xl flex-col gap-10 px-4 pb-16 pt-24 md:flex-row md:items-center md:pb-20 md:pt-28">
         <motion.div
           className="flex-1"
           variants={heroVariants}
@@ -127,19 +175,20 @@ function Hero() {
           animate="visible"
           transition={{ duration: 0.5, ease: "easeOut" }}
         >
-          <p className="mb-3 text-xs font-semibold uppercase tracking-[0.25em] text-sky-400">
+          <p className="mb-3 inline-flex items-center gap-2 rounded-full bg-emerald-50 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-emerald-700 border border-emerald-200">
+            <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
             Data Analyst · Analytics Engineer
           </p>
-          <h1 className="text-balance text-3xl font-semibold tracking-tight text-slate-50 sm:text-4xl lg:text-5xl">
+          <h1 className="text-balance text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl lg:text-6xl">
             Suhas Dhamapurkar
           </h1>
-          <p className="mt-3 max-w-xl text-sm text-slate-400 sm:text-[0.95rem]">
+          <p className="mt-4 max-w-xl text-lg text-slate-600 leading-relaxed">
             Transforming raw data into{" "}
-            <span className="text-sky-400">actionable business insights</span>{" "}
+            <span className="font-semibold text-emerald-600">actionable business insights</span>{" "}
             through predictive models, retail analytics, and decision
             intelligence dashboards.
           </p>
-          <div className="mt-5 flex flex-wrap gap-2">
+          <div className="mt-6 flex flex-wrap gap-2">
             {stackBadges.map((badge, i) => (
               <motion.span
                 key={badge}
@@ -147,16 +196,17 @@ function Hero() {
                 variants={badgeVariants}
                 initial="hidden"
                 animate="visible"
-                className="inline-flex items-center rounded-full border border-slate-700/80 bg-slate-900/80 px-3 py-1 text-[0.7rem] text-slate-300 shadow-sm shadow-slate-950/60"
+                className="inline-flex items-center rounded-full bg-white px-4 py-1.5 text-sm text-slate-700 shadow-sm border border-slate-200 hover:border-emerald-300 hover:shadow-md transition-all"
               >
                 {badge}
               </motion.span>
             ))}
           </div>
-          <div className="mt-6 flex flex-wrap gap-3">
+          <div className="mt-8 flex flex-wrap gap-3">
             <button
               onClick={() => scrollToId("projects")}
-              className="rounded-full bg-gradient-to-r from-sky-400 to-indigo-500 px-4 py-2 text-xs font-semibold text-slate-950 shadow-lg shadow-sky-500/40 transition hover:brightness-110"
+              data-testid="view-projects-btn"
+              className="rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-emerald-500/30 transition-all hover:shadow-xl hover:shadow-emerald-500/40 hover:-translate-y-0.5"
             >
               View Projects
             </button>
@@ -164,21 +214,17 @@ function Hero() {
               href="https://github.com/Suhas5497"
               target="_blank"
               rel="noopener"
-              className="rounded-full border border-slate-700 bg-slate-900/60 px-4 py-2 text-xs font-semibold text-slate-200 shadow-sm shadow-slate-950/50 transition hover:border-sky-500 hover:text-sky-300"
+              data-testid="github-hero-btn"
+              className="rounded-full border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-700 shadow-sm transition-all hover:border-emerald-400 hover:text-emerald-600 hover:shadow-md"
             >
               GitHub
             </a>
             <button
               onClick={() => scrollToId("resume")}
-              className="rounded-full border border-slate-700 bg-slate-900/60 px-4 py-2 text-xs font-semibold text-slate-200 shadow-sm shadow-slate-950/50 transition hover:border-sky-500 hover:text-sky-300"
+              data-testid="resume-hero-btn"
+              className="rounded-full border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-700 shadow-sm transition-all hover:border-emerald-400 hover:text-emerald-600 hover:shadow-md"
             >
               Download Resume
-            </button>
-            <button
-              onClick={() => scrollToId("contact")}
-              className="rounded-full border border-transparent px-4 py-2 text-xs font-semibold text-sky-300 transition hover:text-sky-400"
-            >
-              Contact
             </button>
           </div>
         </motion.div>
@@ -188,85 +234,90 @@ function Hero() {
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.25, duration: 0.45, ease: "easeOut" }}
         >
-          <div className="relative rounded-3xl border border-slate-800 bg-gradient-to-br from-slate-900 to-slate-950 p-4 shadow-2xl shadow-sky-900/50">
-            <div className="mb-3 flex items-center justify-between text-xs text-slate-400">
-              <span className="font-medium text-slate-200">
-                Live Analytics Snapshot
+          <div className="relative rounded-2xl border border-slate-200 bg-white p-5 shadow-xl shadow-slate-200/50">
+            <div className="absolute -top-3 -right-3 rounded-full bg-emerald-500 px-3 py-1 text-xs font-semibold text-white shadow-lg">
+              Live Preview
+            </div>
+            <div className="mb-4 flex items-center justify-between">
+              <span className="font-semibold text-slate-800">
+                Analytics Snapshot
               </span>
-              <span className="rounded-full border border-emerald-500/40 bg-emerald-500/15 px-2 py-0.5 text-[0.65rem] text-emerald-300">
+              <span className="rounded-full bg-emerald-50 border border-emerald-200 px-3 py-1 text-xs font-medium text-emerald-600">
                 Simulated data
               </span>
             </div>
             <div className="grid gap-4 md:grid-cols-2">
               <div className="space-y-2">
-                <p className="text-[0.7rem] uppercase tracking-[0.16em] text-slate-500">
-                  Retail revenue forecast
+                <p className="text-xs uppercase tracking-wider text-slate-500 font-semibold">
+                  Revenue Forecast
                 </p>
-                <div className="h-32 rounded-xl border border-slate-800 bg-slate-950/60 p-1.5">
+                <div className="h-36 rounded-xl border border-slate-100 bg-gradient-to-br from-slate-50 to-white p-2">
                   <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={revenueForecastData}>
+                    <AreaChart data={revenueForecastData}>
                       <defs>
-                        <linearGradient id="lineGradient" x1="0" x2="1" y1="0" y2="0">
-                          <stop offset="0%" stopColor="#38bdf8" />
-                          <stop offset="100%" stopColor="#818cf8" />
+                        <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="0%" stopColor="#10b981" stopOpacity={0.3} />
+                          <stop offset="100%" stopColor="#10b981" stopOpacity={0.05} />
                         </linearGradient>
                       </defs>
-                      <XAxis
-                        dataKey="day"
-                        hide
-                      />
+                      <XAxis dataKey="day" hide />
                       <YAxis hide />
                       <Tooltip
                         contentStyle={{
-                          backgroundColor: "#020617",
-                          border: "1px solid #1f2937",
-                          borderRadius: 8,
-                          fontSize: "0.7rem",
+                          backgroundColor: "#fff",
+                          border: "1px solid #e2e8f0",
+                          borderRadius: 12,
+                          fontSize: "0.75rem",
+                          boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
                         }}
                       />
-                      <Line
+                      <Area
                         type="monotone"
                         dataKey="actual"
-                        stroke="#4ade80"
-                        strokeWidth={1.4}
-                        dot={false}
+                        stroke="#10b981"
+                        strokeWidth={2}
+                        fill="url(#areaGradient)"
                       />
                       <Line
                         type="monotone"
                         dataKey="forecast"
-                        stroke="url(#lineGradient)"
-                        strokeWidth={1.6}
+                        stroke="#0d9488"
+                        strokeWidth={2}
+                        strokeDasharray="5 5"
                         dot={false}
                       />
-                    </LineChart>
+                    </AreaChart>
                   </ResponsiveContainer>
                 </div>
               </div>
               <div className="space-y-2">
-                <p className="text-[0.7rem] uppercase tracking-[0.16em] text-slate-500">
-                  Churn risk drivers
+                <p className="text-xs uppercase tracking-wider text-slate-500 font-semibold">
+                  Churn Risk Drivers
                 </p>
-                <div className="h-32 rounded-xl border border-slate-800 bg-slate-950/60 p-1.5">
+                <div className="h-36 rounded-xl border border-slate-100 bg-gradient-to-br from-slate-50 to-white p-2">
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={churnDriversData} layout="vertical">
-                      <CartesianGrid
-                        strokeDasharray="3 3"
-                        horizontal={false}
-                        stroke="#1e293b"
-                      />
                       <XAxis type="number" hide domain={[0, 1]} />
                       <YAxis
                         type="category"
                         dataKey="feature"
-                        width={70}
-                        tick={{ fontSize: 10, fill: "#9ca3af" }}
+                        width={75}
+                        tick={{ fontSize: 10, fill: "#64748b" }}
+                        axisLine={false}
+                        tickLine={false}
                       />
                       <Bar
                         dataKey="importance"
-                        fill="#38bdf8"
-                        radius={[6, 6, 6, 6]}
-                        barSize={10}
+                        fill="url(#barGradient)"
+                        radius={[0, 8, 8, 0]}
+                        barSize={12}
                       />
+                      <defs>
+                        <linearGradient id="barGradient" x1="0" y1="0" x2="1" y2="0">
+                          <stop offset="0%" stopColor="#10b981" />
+                          <stop offset="100%" stopColor="#06b6d4" />
+                        </linearGradient>
+                      </defs>
                     </BarChart>
                   </ResponsiveContainer>
                 </div>
@@ -279,21 +330,19 @@ function Hero() {
   );
 }
 
-function Section({ id, eyebrow, title, children }) {
+function Section({ id, eyebrow, title, children, className = "" }) {
   return (
-    <section id={id} className="border-b border-slate-800/80 bg-slate-950/40">
-      <div className="mx-auto max-w-6xl px-4 py-10 sm:py-12">
-        <div className="mb-6 flex items-baseline justify-between gap-4">
-          <div>
-            {eyebrow && (
-              <p className="mb-1 text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-sky-400">
-                {eyebrow}
-              </p>
-            )}
-            <h2 className="text-xl font-semibold tracking-tight text-slate-50 sm:text-2xl">
-              {title}
-            </h2>
-          </div>
+    <section id={id} className={`border-b border-slate-200/80 ${className}`}>
+      <div className="mx-auto max-w-6xl px-4 py-16 sm:py-20">
+        <div className="mb-8">
+          {eyebrow && (
+            <p className="mb-2 text-sm font-semibold uppercase tracking-wider text-emerald-600">
+              {eyebrow}
+            </p>
+          )}
+          <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
+            {title}
+          </h2>
         </div>
         {children}
       </div>
@@ -303,26 +352,30 @@ function Section({ id, eyebrow, title, children }) {
 
 function About() {
   return (
-    <Section id="about" eyebrow="About" title="Data analytics with a product mindset">
-      <div className="grid gap-6 md:grid-cols-[minmax(0,1.7fr)_minmax(0,1.3fr)]">
-        <p className="max-w-xl text-sm leading-relaxed text-slate-300">
-          I am a data analyst with a background in{" "}
-          <span className="font-medium text-sky-300">
-            Artificial Intelligence & Machine Learning
-          </span>
-          , focused on converting messy, real-world data into decision-ready
-          analytics experiences. I enjoy the full lifecycle: from clean data
-          pipelines and statistical modelling to interactive dashboards that
-          help business teams act with confidence.
-        </p>
-        <div className="grid gap-3 text-sm text-slate-300 sm:grid-cols-2">
+    <Section id="about" eyebrow="About" title="Data analytics with a product mindset" className="bg-white">
+      <div className="grid gap-8 lg:grid-cols-[1.5fr_1fr]">
+        <div>
+          <p className="text-lg leading-relaxed text-slate-600">
+            I am a data analyst with a background in{" "}
+            <span className="font-semibold text-emerald-600">
+              Artificial Intelligence & Machine Learning
+            </span>
+            , focused on converting messy, real-world data into decision-ready
+            analytics experiences. I enjoy the full lifecycle: from clean data
+            pipelines and statistical modelling to interactive dashboards that
+            help business teams act with confidence.
+          </p>
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2">
           <AboutCard
             title="Programming"
             items={["Python", "SQL", "EDA workflows", "Feature engineering"]}
+            icon="code"
           />
           <AboutCard
             title="Visualization"
             items={["Power BI", "Tableau", "Analytics dashboards", "Storytelling"]}
+            icon="chart"
           />
           <AboutCard
             title="Machine Learning"
@@ -331,10 +384,12 @@ function About() {
               "Time series forecasting",
               "Evaluation & monitoring",
             ]}
+            icon="brain"
           />
           <AboutCard
             title="Business Focus"
             items={["Retail analytics", "Customer churn", "Decision intelligence"]}
+            icon="briefcase"
           />
         </div>
       </div>
@@ -342,15 +397,44 @@ function About() {
   );
 }
 
-function AboutCard({ title, items }) {
+function AboutCard({ title, items, icon }) {
+  const icons = {
+    code: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+      </svg>
+    ),
+    chart: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+      </svg>
+    ),
+    brain: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+      </svg>
+    ),
+    briefcase: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+      </svg>
+    ),
+  };
+
   return (
-    <div className="rounded-2xl border border-slate-800 bg-slate-950/60 p-3.5 shadow-sm shadow-slate-950/50">
-      <h3 className="mb-1.5 text-xs font-semibold uppercase tracking-[0.16em] text-slate-400">
-        {title}
-      </h3>
-      <ul className="space-y-0.5 text-[0.8rem] text-slate-300">
+    <div className="group rounded-2xl border border-slate-200 bg-gradient-to-br from-white to-slate-50 p-5 shadow-sm transition-all hover:shadow-lg hover:border-emerald-200 hover:-translate-y-1">
+      <div className="mb-3 flex items-center gap-2 text-emerald-600">
+        {icons[icon]}
+        <h3 className="text-sm font-bold uppercase tracking-wider text-slate-700">
+          {title}
+        </h3>
+      </div>
+      <ul className="space-y-1.5 text-sm text-slate-600">
         {items.map((item) => (
-          <li key={item}>• {item}</li>
+          <li key={item} className="flex items-center gap-2">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>
+            {item}
+          </li>
         ))}
       </ul>
     </div>
@@ -363,41 +447,50 @@ function FeaturedPlatform() {
       id="platform"
       eyebrow="Featured Analytics Platform"
       title="Resilytics — Retail Decision Intelligence Platform"
+      className="bg-gradient-to-br from-slate-50 to-emerald-50/30"
     >
-      <div className="grid gap-8 md:grid-cols-[minmax(0,1.7fr)_minmax(0,1.3fr)]">
-        <div className="space-y-4 text-sm text-slate-300">
-          <p>
-            <span className="font-semibold text-sky-300">Resilytics</span> is a
+      <div className="grid gap-10 lg:grid-cols-[1.5fr_1fr]">
+        <div className="space-y-5">
+          <p className="text-lg text-slate-600 leading-relaxed">
+            <span className="font-bold text-emerald-600">Resilytics</span> is a
             retail decision intelligence platform concept that combines
             automated data pipelines, machine learning, and analytics dashboards
             to answer a single question:{" "}
-            <span className="italic">
-              “What should we do next to improve performance?”
+            <span className="italic font-medium text-slate-700">
+              "What should we do next to improve performance?"
             </span>
           </p>
-          <ul className="grid gap-2 text-[0.9rem] sm:grid-cols-2">
-            <li>• Automated ETL from transactional and marketing systems.</li>
-            <li>• Demand forecasting for products and stores.</li>
-            <li>• Store and segment level profitability analytics.</li>
-            <li>• Insight tiles for pricing, discounting, and retention.</li>
+          <ul className="grid gap-3 sm:grid-cols-2">
+            {[
+              "Automated ETL from transactional and marketing systems",
+              "Demand forecasting for products and stores",
+              "Store and segment level profitability analytics",
+              "Insight tiles for pricing, discounting, and retention",
+            ].map((item) => (
+              <li key={item} className="flex items-start gap-3 text-slate-600">
+                <span className="mt-1 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-emerald-100 text-emerald-600">
+                  <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                </span>
+                {item}
+              </li>
+            ))}
           </ul>
-          <div className="flex flex-wrap gap-3 pt-1 text-xs">
-            <span className="rounded-full border border-slate-700 bg-slate-900/70 px-3 py-1 text-slate-200">
-              Python + SQL ETL
-            </span>
-            <span className="rounded-full border border-slate-700 bg-slate-900/70 px-3 py-1 text-slate-200">
-              ML Forecasting
-            </span>
-            <span className="rounded-full border border-slate-700 bg-slate-900/70 px-3 py-1 text-slate-200">
-              Power BI dashboards
-            </span>
+          <div className="flex flex-wrap gap-2 pt-2">
+            {["Python + SQL ETL", "ML Forecasting", "Power BI Dashboards"].map((tag) => (
+              <span key={tag} className="rounded-full bg-white border border-emerald-200 px-4 py-1.5 text-sm font-medium text-emerald-700 shadow-sm">
+                {tag}
+              </span>
+            ))}
           </div>
-          <div className="flex flex-wrap gap-3 pt-2 text-xs">
+          <div className="flex flex-wrap gap-3 pt-4">
             <button
               onClick={() => scrollToId("projects")}
-              className="rounded-full bg-sky-500 px-4 py-2 font-semibold text-slate-950 shadow-md shadow-sky-500/40 transition hover:brightness-110"
+              data-testid="explore-projects-btn"
+              className="rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-emerald-500/30 transition-all hover:shadow-xl hover:-translate-y-0.5"
             >
-              Explore related projects
+              Explore Related Projects
             </button>
           </div>
         </div>
@@ -412,25 +505,33 @@ function FeaturedPlatform() {
 
 function ArchitectureDiagram() {
   const nodes = [
-    "Data Sources",
-    "ETL (Python + SQL)",
-    "ML Models",
-    "Analytics Dashboards",
-    "Business Insights",
+    { name: "Data Sources", icon: "database" },
+    { name: "ETL Pipeline", icon: "cog" },
+    { name: "ML Models", icon: "brain" },
+    { name: "Dashboards", icon: "chart" },
+    { name: "Insights", icon: "lightbulb" },
   ];
+  
   return (
-    <div className="rounded-2xl border border-slate-800 bg-slate-950/70 p-3.5 shadow-md shadow-slate-950/70">
-      <p className="mb-2 text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-slate-400">
-        High-level architecture
+    <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-lg">
+      <p className="mb-4 text-sm font-bold uppercase tracking-wider text-slate-500">
+        High-Level Architecture
       </p>
-      <div className="flex flex-wrap items-center justify-between gap-2 text-[0.7rem]">
+      <div className="flex flex-col gap-2">
         {nodes.map((node, idx) => (
-          <React.Fragment key={node}>
-            <div className="flex min-w-[110px] flex-1 items-center justify-center rounded-full border border-slate-700 bg-slate-900/80 px-3 py-1.5 text-center text-slate-200">
-              {node}
+          <React.Fragment key={node.name}>
+            <div className="flex items-center gap-3 rounded-xl bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-100 px-4 py-3">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-500 text-white">
+                <span className="text-xs font-bold">{idx + 1}</span>
+              </div>
+              <span className="font-medium text-slate-700">{node.name}</span>
             </div>
             {idx < nodes.length - 1 && (
-              <span className="text-sky-400/70">➝</span>
+              <div className="flex justify-center">
+                <svg className="w-5 h-5 text-emerald-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+                </svg>
+              </div>
             )}
           </React.Fragment>
         ))}
@@ -441,33 +542,31 @@ function ArchitectureDiagram() {
 
 function VideoPlaceholder() {
   return (
-    <div className="rounded-2xl border border-slate-800 bg-gradient-to-br from-slate-900 to-slate-950 p-3 shadow-md shadow-slate-950/70">
-      <p className="mb-2 text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-slate-400">
-        Product walkthrough video
+    <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-lg">
+      <p className="mb-3 text-sm font-bold uppercase tracking-wider text-slate-500">
+        Product Walkthrough
       </p>
-      <div className="relative aspect-video w-full overflow-hidden rounded-xl border border-slate-800 bg-slate-900/80">
-        <div className="absolute inset-0 flex items-center justify-center text-xs text-slate-400">
-          <p className="max-w-xs text-center">
-            Embed your Resilytics platform demo video here
-            (e.g. YouTube/Drive link).
+      <div className="relative aspect-video w-full overflow-hidden rounded-xl bg-gradient-to-br from-slate-100 to-slate-50 border border-slate-200">
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-4">
+          <div className="mb-3 flex h-16 w-16 items-center justify-center rounded-full bg-emerald-100 text-emerald-600">
+            <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
+            </svg>
+          </div>
+          <p className="text-sm text-slate-500">
+            Platform demo video coming soon
           </p>
         </div>
       </div>
-      <div className="mt-3 flex flex-wrap gap-3 text-xs">
+      <div className="mt-4 flex flex-wrap gap-2">
         <a
           href="https://github.com/Suhas5497"
           target="_blank"
           rel="noopener"
-          className="rounded-full border border-slate-700 bg-slate-900/60 px-3 py-1.5 font-semibold text-slate-200 hover:border-sky-500 hover:text-sky-300"
+          className="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm hover:border-emerald-300 hover:text-emerald-600 transition-all"
         >
           GitHub Repository
         </a>
-        <button className="rounded-full border border-slate-700 bg-slate-900/60 px-3 py-1.5 font-semibold text-slate-200 hover:border-sky-500 hover:text-sky-300">
-          Project Documentation
-        </button>
-        <button className="rounded-full border border-sky-500/60 bg-sky-500/10 px-3 py-1.5 font-semibold text-sky-300 hover:bg-sky-500/20">
-          Live Demo
-        </button>
       </div>
     </div>
   );
@@ -478,9 +577,10 @@ function Projects() {
     <Section
       id="projects"
       eyebrow="Projects"
-      title="Analytics and machine learning projects"
+      title="Analytics and Machine Learning Projects"
+      className="bg-white"
     >
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-6 md:grid-cols-2">
         <ProjectCard
           index={1}
           title="Customer Churn Prediction System"
@@ -488,16 +588,13 @@ function Projects() {
           tech={["Python", "Scikit-learn", "Streamlit", "EDA", "Feature Importance"]}
           image="/assets/churn-model.png"
           links={{
-            github:
-              "https://github.com/Suhas5497/customer-churn-prediction-system",
+            github: "https://github.com/Suhas5497/customer-churn-prediction-system",
+            demo: DEMO_URLS.churn,
           }}
           details={{
-            problem:
-              "Identify customers at high risk of churn before they leave and reduce revenue loss.",
-            approach:
-              "Performed EDA, feature engineering, and trained classification models with hyperparameter tuning and cross-validation.",
-            insights:
-              "Surfaced key churn drivers and provided a ranked list of high-risk customers through an interactive app.",
+            problem: "Identify customers at high risk of churn before they leave and reduce revenue loss.",
+            approach: "Performed EDA, feature engineering, and trained classification models with hyperparameter tuning and cross-validation.",
+            insights: "Surfaced key churn drivers and provided a ranked list of high-risk customers through an interactive app.",
           }}
         />
         <ProjectCard
@@ -507,16 +604,12 @@ function Projects() {
           tech={["TensorFlow", "LSTM", "Time Series", "NSE Data"]}
           image="/assets/stock-forecast-chart.png"
           links={{
-            github:
-              "https://github.com/Suhas5497/Yes-Bank-Stock-Price-Analysis-Future-Price-Prediction",
+            github: "https://github.com/Suhas5497/Yes-Bank-Stock-Price-Analysis-Future-Price-Prediction",
           }}
           details={{
-            problem:
-              "Forecast short-term stock movement to support trading and risk insights.",
-            approach:
-              "Built sequence-based LSTM models, compared against regression baselines, and evaluated using MAE/MSE.",
-            insights:
-              "Delivered scenario visualizations showing historical vs. predicted prices for better decision support.",
+            problem: "Forecast short-term stock movement to support trading and risk insights.",
+            approach: "Built sequence-based LSTM models, compared against regression baselines, and evaluated using MAE/MSE.",
+            insights: "Delivered scenario visualizations showing historical vs. predicted prices for better decision support.",
           }}
         />
         <ProjectCard
@@ -526,16 +619,13 @@ function Projects() {
           tech={["Power BI", "DAX", "Sales Analytics"]}
           image="/assets/retail-sales-dashboard.png"
           links={{
-            github:
-              "https://github.com/Suhas5497/sales-intelligence-platform",
+            github: "https://github.com/Suhas5497/sales-intelligence-platform",
+            demo: DEMO_URLS.retail,
           }}
           details={{
-            problem:
-              "Give retail leaders a single view of store performance without manual spreadsheet reports.",
-            approach:
-              "Built a Power BI model with DAX measures and slicers across segments, categories, and time.",
-            insights:
-              "Highlighted underperforming stores and products, unlocking targeted actions on assortment and discounting.",
+            problem: "Give retail leaders a single view of store performance without manual spreadsheet reports.",
+            approach: "Built a Power BI model with DAX measures and slicers across segments, categories, and time.",
+            insights: "Highlighted underperforming stores and products, unlocking targeted actions on assortment and discounting.",
           }}
         />
         <ProjectCard
@@ -548,12 +638,9 @@ function Projects() {
             github: "https://github.com/Suhas5497/Amazone-Prime-Analysis",
           }}
           details={{
-            problem:
-              "Support content strategy with data-backed insights into catalog composition and user-facing themes.",
-            approach:
-              "Used Pandas, visualization, and basic NLP with WordCloud to cluster themes and identify underrepresented genres.",
-            insights:
-              "Revealed imbalances in genre coverage and regional content mix, informing future acquisition focus.",
+            problem: "Support content strategy with data-backed insights into catalog composition and user-facing themes.",
+            approach: "Used Pandas, visualization, and basic NLP with WordCloud to cluster themes and identify underrepresented genres.",
+            insights: "Revealed imbalances in genre coverage and regional content mix, informing future acquisition focus.",
           }}
         />
       </div>
@@ -564,107 +651,128 @@ function Projects() {
 function ProjectCard({ index, title, description, tech, links, details, image }) {
   return (
     <motion.article
-      className="group flex flex-col rounded-2xl border border-slate-800 bg-slate-950/70 p-4 shadow-sm shadow-slate-950/60 transition hover:-translate-y-1.5 hover:border-sky-500/70 hover:shadow-xl hover:shadow-slate-950/80"
-      initial={{ opacity: 0, y: 18 }}
+      className="group flex flex-col rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-sm transition-all duration-300 hover:shadow-xl hover:border-emerald-200 hover:-translate-y-2"
+      initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 0.4, ease: "easeOut" }}
+      data-testid={`project-card-${index}`}
     >
-      <div className="mb-3 h-32 overflow-hidden rounded-xl border border-slate-800 bg-slate-900/70">
-        <div
-          className="h-full w-full bg-gradient-to-tr from-sky-500/20 via-indigo-500/10 to-fuchsia-500/10"
-          style={
-            image
-              ? {
-                  backgroundImage: `url(${image})`,
-                  backgroundPosition: "center",
-                  backgroundSize: "cover",
-                }
-              : {
-                  backgroundImage: "url(/assets/placeholder-project.svg)",
-                  backgroundPosition: "center",
-                  backgroundSize: "cover",
-                }
-          }
+      <div className="relative h-[200px] overflow-hidden">
+        <img
+          src={image}
+          alt={title}
+          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+          onError={(e) => {
+            e.target.style.display = 'none';
+            e.target.nextSibling.style.display = 'flex';
+          }}
         />
-      </div>
-      <div className="mb-2 flex items-center justify-between text-xs text-slate-400">
-        <span className="rounded-full border border-slate-700/80 bg-slate-900/80 px-2 py-0.5 text-[0.65rem]">
-          Project {index.toString().padStart(2, "0")}
-        </span>
-      </div>
-      <h3 className="text-sm font-semibold text-slate-50 sm:text-base">
-        {title}
-      </h3>
-      <p className="mt-1 text-[0.8rem] leading-relaxed text-slate-300">
-        {description}
-      </p>
-      <div className="mt-3 flex flex-wrap gap-1.5">
-        {tech.map((tag) => (
-          <span
-            key={tag}
-            className="rounded-full border border-slate-800 bg-slate-900/70 px-2 py-0.5 text-[0.7rem] text-slate-300"
-          >
-            {tag}
+        <div 
+          className="absolute inset-0 hidden items-center justify-center bg-gradient-to-br from-emerald-100 to-teal-100"
+        >
+          <span className="text-emerald-600 font-medium">Project {index}</span>
+        </div>
+        <div className="absolute top-3 left-3">
+          <span className="rounded-full bg-white/90 backdrop-blur px-3 py-1 text-xs font-semibold text-slate-700 shadow-sm">
+            Project {index.toString().padStart(2, "0")}
           </span>
-        ))}
+        </div>
       </div>
-      <dl className="mt-3 space-y-1.5 text-[0.8rem] text-slate-300">
-        <div>
-          <dt className="font-semibold text-slate-200">Problem</dt>
-          <dd>{details.problem}</dd>
+      <div className="flex flex-col flex-1 p-5">
+        <h3 className="text-lg font-bold text-slate-900 group-hover:text-emerald-600 transition-colors">
+          {title}
+        </h3>
+        <p className="mt-2 text-sm text-slate-600 leading-relaxed">
+          {description}
+        </p>
+        <div className="mt-3 flex flex-wrap gap-1.5">
+          {tech.map((tag) => (
+            <span
+              key={tag}
+              className="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-600"
+            >
+              {tag}
+            </span>
+          ))}
         </div>
-        <div>
-          <dt className="font-semibold text-slate-200">Approach</dt>
-          <dd>{details.approach}</dd>
+        <dl className="mt-4 space-y-2 text-sm">
+          <div>
+            <dt className="font-semibold text-slate-800">Problem</dt>
+            <dd className="text-slate-600">{details.problem}</dd>
+          </div>
+          <div>
+            <dt className="font-semibold text-slate-800">Approach</dt>
+            <dd className="text-slate-600">{details.approach}</dd>
+          </div>
+          <div>
+            <dt className="font-semibold text-slate-800">Insights</dt>
+            <dd className="text-slate-600">{details.insights}</dd>
+          </div>
+        </dl>
+        <div className="mt-auto pt-4 flex flex-wrap gap-3 border-t border-slate-100">
+          {links.github && (
+            <a
+              href={links.github}
+              target="_blank"
+              rel="noopener"
+              data-testid={`github-link-${index}`}
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-slate-600 hover:text-emerald-600 transition-colors"
+            >
+              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+              </svg>
+              View on GitHub
+            </a>
+          )}
+          {links.demo ? (
+            <a
+              href={links.demo}
+              target="_blank"
+              rel="noopener"
+              data-testid={`demo-link-${index}`}
+              className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 border border-emerald-200 px-4 py-1.5 text-sm font-medium text-emerald-700 hover:bg-emerald-100 transition-colors"
+            >
+              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
+              </svg>
+              Launch Demo
+            </a>
+          ) : (
+            <span
+              title="Demo coming soon"
+              className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-4 py-1.5 text-sm font-medium text-slate-400 cursor-not-allowed"
+            >
+              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
+              </svg>
+              Demo Coming Soon
+            </span>
+          )}
         </div>
-        <div>
-          <dt className="font-semibold text-slate-200">Insights</dt>
-          <dd>{details.insights}</dd>
-        </div>
-      </dl>
-      <div className="mt-3 flex flex-wrap gap-3 text-xs">
-        {links.github && (
-          <a
-            href={links.github}
-            target="_blank"
-            rel="noopener"
-            className="inline-flex items-center gap-1 text-sky-300 hover:text-sky-400"
-          >
-            <span>View on GitHub</span>
-            <span aria-hidden>↗</span>
-          </a>
-        )}
-        {links.demo && (
-          <a
-            href={links.demo}
-            target="_blank"
-            rel="noopener"
-            className="inline-flex items-center gap-1 text-sky-300 hover:text-sky-400"
-          >
-            <span>Launch demo</span>
-            <span aria-hidden>↗</span>
-          </a>
-        )}
       </div>
     </motion.article>
   );
 }
 
 function InteractiveDemos() {
+  const [activeDemo, setActiveDemo] = useState(null);
+  
   return (
     <Section
       id="demos"
       eyebrow="Interactive Demos"
-      title="Live analytics experiences"
+      title="Live Analytics Experiences"
+      className="bg-gradient-to-br from-slate-50 to-emerald-50/30"
     >
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-6 md:grid-cols-2">
         <DemoCard
           title="Customer Churn Streamlit App"
           description="Explore churn risk by segment, filter customers, and observe how probability changes with contract and tenure."
           github="https://github.com/Suhas5497/customer-churn-prediction-system"
           demoKey="churn"
           previewImage="/assets/churn-model.png"
+          onPreview={() => setActiveDemo("churn")}
         />
         <DemoCard
           title="Retail Sales Dashboard"
@@ -672,78 +780,144 @@ function InteractiveDemos() {
           github="https://github.com/Suhas5497/sales-intelligence-platform"
           demoKey="retail"
           previewImage="/assets/retail-sales-dashboard.png"
+          onPreview={() => setActiveDemo("retail")}
         />
       </div>
+      
+      <AnimatePresence>
+        {activeDemo && (
+          <DemoModal 
+            demoKey={activeDemo} 
+            onClose={() => setActiveDemo(null)} 
+          />
+        )}
+      </AnimatePresence>
     </Section>
   );
 }
 
-function DemoCard({ title, description, github, demoKey, previewImage }) {
+function DemoCard({ title, description, github, demoKey, previewImage, onPreview }) {
   const demoUrl = DEMO_URLS[demoKey];
   const isDemoAvailable = Boolean(demoUrl);
+  
   return (
-    <div className="flex flex-col rounded-2xl border border-slate-800 bg-slate-950/70 p-4 shadow-sm shadow-slate-950/60">
-      <div className="mb-3 h-32 overflow-hidden rounded-xl border border-slate-800 bg-gradient-to-tr from-sky-500/20 via-indigo-500/10 to-fuchsia-500/10">
-        {isDemoAvailable ? (
-          <iframe
-            src={demoUrl}
-            title={title}
-            className="h-full w-full border-0"
-            loading="lazy"
+    <div className="flex flex-col rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-sm hover:shadow-lg transition-all">
+      <div className="relative h-48 overflow-hidden bg-gradient-to-br from-slate-100 to-slate-50">
+        {previewImage && (
+          <img 
+            src={previewImage} 
+            alt={title}
+            className="h-full w-full object-cover"
           />
-        ) : (
-          <div
-            className="flex h-full w-full items-center justify-center text-[0.7rem] text-slate-300"
-            style={
-              previewImage
-                ? {
-                    backgroundImage: `url(${previewImage})`,
-                    backgroundPosition: "center",
-                    backgroundSize: "cover",
-                  }
-                : undefined
-            }
-          >
-            {!previewImage && <span>Demo preview coming soon</span>}
+        )}
+        {isDemoAvailable && (
+          <div className="absolute inset-0 bg-black/40 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+            <button
+              onClick={onPreview}
+              data-testid={`preview-${demoKey}-btn`}
+              className="rounded-full bg-white px-6 py-3 text-sm font-semibold text-slate-800 shadow-lg hover:bg-emerald-50 transition-colors"
+            >
+              Preview in Modal
+            </button>
           </div>
         )}
       </div>
-      <h3 className="text-sm font-semibold text-slate-50 sm:text-base">
-        {title}
-      </h3>
-      <p className="mt-1 text-[0.8rem] text-slate-300">{description}</p>
-      <div className="mt-3 flex flex-wrap gap-3 text-xs">
-        <a
-          href={github}
-          target="_blank"
-          rel="noopener"
-          className="inline-flex items-center gap-1 text-sky-300 hover:text-sky-400"
-        >
-          <span>GitHub</span>
-          <span aria-hidden>↗</span>
-        </a>
-        {isDemoAvailable ? (
+      <div className="flex flex-col flex-1 p-5">
+        <h3 className="text-lg font-bold text-slate-900">{title}</h3>
+        <p className="mt-2 text-sm text-slate-600">{description}</p>
+        <div className="mt-auto pt-4 flex flex-wrap gap-3">
           <a
-            href={demoUrl}
+            href={github}
             target="_blank"
             rel="noopener"
-            className="inline-flex items-center gap-1 text-sky-300 hover:text-sky-400"
+            className="inline-flex items-center gap-1.5 text-sm font-medium text-slate-600 hover:text-emerald-600 transition-colors"
           >
-            <span>Launch demo</span>
-            <span aria-hidden>↗</span>
+            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+            </svg>
+            GitHub
           </a>
-        ) : (
-          <button
-            type="button"
-            disabled
-            title="Demo coming soon."
-            className="inline-flex cursor-not-allowed items-center gap-1 rounded-full border border-slate-700/70 bg-slate-900/60 px-3 py-1 text-slate-500"
-          >
-            <span>Demo coming soon</span>
-          </button>
-        )}
+          {isDemoAvailable ? (
+            <a
+              href={demoUrl}
+              target="_blank"
+              rel="noopener"
+              data-testid={`launch-${demoKey}-btn`}
+              className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500 px-4 py-1.5 text-sm font-semibold text-white shadow-md hover:bg-emerald-600 transition-colors"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+              Launch Demo
+            </a>
+          ) : (
+            <span
+              title="Demo coming soon"
+              className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-4 py-1.5 text-sm font-medium text-slate-400 cursor-not-allowed"
+            >
+              Demo Coming Soon
+            </span>
+          )}
+        </div>
       </div>
     </div>
+  );
+}
+
+function DemoModal({ demoKey, onClose }) {
+  const demoUrl = DEMO_URLS[demoKey];
+  const titles = {
+    churn: "Customer Churn Prediction App",
+    retail: "Retail Sales Dashboard",
+  };
+  
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
+      onClick={onClose}
+    >
+      <motion.div
+        initial={{ scale: 0.9, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0.9, opacity: 0 }}
+        className="relative w-full max-w-5xl bg-white rounded-2xl shadow-2xl overflow-hidden"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="flex items-center justify-between px-5 py-4 border-b border-slate-200">
+          <h3 className="font-bold text-slate-900">{titles[demoKey]}</h3>
+          <div className="flex items-center gap-3">
+            <a
+              href={demoUrl}
+              target="_blank"
+              rel="noopener"
+              className="rounded-full bg-emerald-500 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-600 transition-colors"
+            >
+              Open in New Tab
+            </a>
+            <button
+              onClick={onClose}
+              data-testid="close-modal-btn"
+              className="rounded-full p-2 hover:bg-slate-100 transition-colors"
+            >
+              <svg className="w-5 h-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div className="aspect-video w-full bg-slate-100">
+          <iframe
+            src={demoUrl}
+            title={titles[demoKey]}
+            className="h-full w-full border-0"
+            loading="lazy"
+          />
+        </div>
+      </motion.div>
+    </motion.div>
   );
 }
 
@@ -752,102 +926,113 @@ function AnalyticsVisuals() {
     <Section
       id="visuals"
       eyebrow="Analytics Visualizations"
-      title="How I think in charts"
+      title="How I Think in Charts"
+      className="bg-white"
     >
-      <div className="grid gap-4 md:grid-cols-3">
-        <div className="rounded-2xl border border-slate-800 bg-slate-950/70 p-3">
-          <p className="mb-2 text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-slate-400">
-            Stock price forecast
+      <div className="grid gap-6 md:grid-cols-3">
+        <div className="rounded-2xl border border-slate-200 bg-gradient-to-br from-white to-slate-50 p-5 shadow-sm hover:shadow-lg transition-all">
+          <p className="mb-3 text-sm font-bold uppercase tracking-wider text-slate-500">
+            Revenue Forecast
           </p>
-          <div className="h-40">
+          <div className="h-48">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={revenueForecastData}>
-                <XAxis dataKey="day" tick={{ fontSize: 10, fill: "#9ca3af" }} />
-                <YAxis tick={{ fontSize: 10, fill: "#9ca3af" }} />
+                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                <XAxis dataKey="day" tick={{ fontSize: 11, fill: "#64748b" }} />
+                <YAxis tick={{ fontSize: 11, fill: "#64748b" }} />
                 <Tooltip
                   contentStyle={{
-                    backgroundColor: "#020617",
-                    border: "1px solid #1f2937",
-                    borderRadius: 8,
-                    fontSize: "0.7rem",
+                    backgroundColor: "#fff",
+                    border: "1px solid #e2e8f0",
+                    borderRadius: 12,
+                    fontSize: "0.75rem",
+                    boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
                   }}
                 />
-                <Legend wrapperStyle={{ fontSize: "0.7rem" }} />
+                <Legend wrapperStyle={{ fontSize: "0.75rem" }} />
                 <Line
                   type="monotone"
                   dataKey="actual"
                   name="Historical"
-                  stroke="#4ade80"
-                  strokeWidth={1.5}
-                  dot={false}
+                  stroke="#10b981"
+                  strokeWidth={2}
+                  dot={{ fill: "#10b981", strokeWidth: 0, r: 3 }}
                 />
                 <Line
                   type="monotone"
                   dataKey="forecast"
                   name="Forecast"
-                  stroke="#38bdf8"
-                  strokeWidth={1.7}
-                  strokeDasharray="4 3"
-                  dot={false}
+                  stroke="#0d9488"
+                  strokeWidth={2}
+                  strokeDasharray="5 5"
+                  dot={{ fill: "#0d9488", strokeWidth: 0, r: 3 }}
                 />
               </LineChart>
             </ResponsiveContainer>
           </div>
         </div>
-        <div className="rounded-2xl border border-slate-800 bg-slate-950/70 p-3">
-          <p className="mb-2 text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-slate-400">
-            Customer churn drivers
+        <div className="rounded-2xl border border-slate-200 bg-gradient-to-br from-white to-slate-50 p-5 shadow-sm hover:shadow-lg transition-all">
+          <p className="mb-3 text-sm font-bold uppercase tracking-wider text-slate-500">
+            Customer Churn Drivers
           </p>
-          <div className="h-40">
+          <div className="h-48">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={churnDriversData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
+                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
                 <XAxis
                   dataKey="feature"
-                  tick={{ fontSize: 10, fill: "#9ca3af" }}
+                  tick={{ fontSize: 10, fill: "#64748b" }}
                 />
                 <YAxis
-                  tick={{ fontSize: 10, fill: "#9ca3af" }}
+                  tick={{ fontSize: 11, fill: "#64748b" }}
                   domain={[0, 1]}
                 />
                 <Tooltip
                   contentStyle={{
-                    backgroundColor: "#020617",
-                    border: "1px solid #1f2937",
-                    borderRadius: 8,
-                    fontSize: "0.7rem",
+                    backgroundColor: "#fff",
+                    border: "1px solid #e2e8f0",
+                    borderRadius: 12,
+                    fontSize: "0.75rem",
+                    boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
                   }}
                 />
                 <Bar
                   dataKey="importance"
-                  fill="#38bdf8"
-                  radius={[6, 6, 0, 0]}
+                  fill="url(#chartBarGradient)"
+                  radius={[8, 8, 0, 0]}
                 />
+                <defs>
+                  <linearGradient id="chartBarGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#10b981" />
+                    <stop offset="100%" stopColor="#06b6d4" />
+                  </linearGradient>
+                </defs>
               </BarChart>
             </ResponsiveContainer>
           </div>
         </div>
-        <div className="rounded-2xl border border-slate-800 bg-slate-950/70 p-3">
-          <p className="mb-2 text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-slate-400">
-            Skill radar
+        <div className="rounded-2xl border border-slate-200 bg-gradient-to-br from-white to-slate-50 p-5 shadow-sm hover:shadow-lg transition-all">
+          <p className="mb-3 text-sm font-bold uppercase tracking-wider text-slate-500">
+            Skill Radar
           </p>
-          <div className="h-40">
+          <div className="h-48">
             <ResponsiveContainer width="100%" height="100%">
               <RadarChart data={skillsRadarData}>
-                <PolarGrid stroke="#1e293b" />
+                <PolarGrid stroke="#e2e8f0" />
                 <PolarAngleAxis
                   dataKey="subject"
-                  tick={{ fontSize: 10, fill: "#9ca3af" }}
+                  tick={{ fontSize: 11, fill: "#64748b" }}
                 />
                 <PolarRadiusAxis
-                  tick={{ fontSize: 9, fill: "#64748b" }}
+                  tick={{ fontSize: 10, fill: "#94a3b8" }}
                   tickCount={4}
                 />
                 <Radar
                   dataKey="score"
-                  stroke="#38bdf8"
-                  fill="#38bdf8"
-                  fillOpacity={0.4}
+                  stroke="#10b981"
+                  fill="#10b981"
+                  fillOpacity={0.3}
+                  strokeWidth={2}
                 />
               </RadarChart>
             </ResponsiveContainer>
@@ -859,55 +1044,75 @@ function AnalyticsVisuals() {
 }
 
 function Skills() {
+  const skillBars = [
+    { label: "Python, Pandas & NumPy", value: 92 },
+    { label: "Machine Learning (sklearn)", value: 88 },
+    { label: "Deep Learning (TensorFlow, LSTM)", value: 84 },
+    { label: "NLP (NLTK, TF-IDF, CountVectorizer)", value: 86 },
+    { label: "SQL & BI Dashboards", value: 90 },
+  ];
+
   return (
     <Section
       id="skills"
       eyebrow="Skills"
-      title="Technical skills mapped to outcomes"
+      title="Technical Skills Mapped to Outcomes"
+      className="bg-gradient-to-br from-slate-50 to-emerald-50/30"
     >
-      <div className="skills-layout">
-        <div className="skills-columns">
-          <div className="skills-column">
-            <h3>Programming</h3>
-            <p>Python, SQL, scripting analytics workflows, and automation.</p>
-            <h3>Analytics</h3>
-            <p>
-              EDA, hypothesis testing, experiment analysis, and business
-              performance reviews.
-            </p>
-          </div>
-          <div className="skills-column">
-            <h3>Visualization</h3>
-            <p>Power BI, Tableau, and Excel dashboards with stakeholder focus.</p>
-            <h3>Machine Learning</h3>
-            <p>
-              Regression, classification, clustering, time series, and NLP with
-              libraries like Scikit-learn and TensorFlow.
-            </p>
-          </div>
+      <div className="grid gap-10 lg:grid-cols-2">
+        <div className="grid gap-5 sm:grid-cols-2">
+          <SkillCategory
+            title="Programming"
+            description="Python, SQL, scripting analytics workflows, and automation."
+          />
+          <SkillCategory
+            title="Analytics"
+            description="EDA, hypothesis testing, experiment analysis, and business performance reviews."
+          />
+          <SkillCategory
+            title="Visualization"
+            description="Power BI, Tableau, and Excel dashboards with stakeholder focus."
+          />
+          <SkillCategory
+            title="Machine Learning"
+            description="Regression, classification, clustering, time series, and NLP with libraries like Scikit-learn and TensorFlow."
+          />
         </div>
-        <div className="skills-metrics" id="skillBars">
-          <h3>Skill Snapshot</h3>
-          {[
-            ["Python, Pandas & NumPy", 92],
-            ["Machine Learning (sklearn)", 88],
-            ["Deep Learning (TensorFlow, LSTM)", 84],
-            ["NLP (NLTK, TF-IDF, CountVectorizer)", 86],
-            ["SQL & BI Dashboards", 90],
-          ].map(([label, value]) => (
-            <div key={label} className="skill-bar" data-level={value}>
-              <div className="skill-bar-header">
-                <span className="skill-bar-label">{label}</span>
-                <span className="skill-bar-value">{value}%</span>
+        <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-lg">
+          <h3 className="mb-5 text-lg font-bold text-slate-800">Skill Proficiency</h3>
+          <div className="space-y-5">
+            {skillBars.map((skill) => (
+              <div key={skill.label}>
+                <div className="mb-2 flex items-center justify-between text-sm">
+                  <span className="font-medium text-slate-700">{skill.label}</span>
+                  <span className="font-bold text-emerald-600">{skill.value}%</span>
+                </div>
+                <div className="h-3 rounded-full bg-slate-100 overflow-hidden">
+                  <motion.div
+                    initial={{ width: 0 }}
+                    whileInView={{ width: `${skill.value}%` }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 1, ease: "easeOut" }}
+                    className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-teal-400"
+                  />
+                </div>
               </div>
-              <div className="skill-bar-track">
-                <div className="skill-bar-fill" />
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </Section>
+  );
+}
+
+function SkillCategory({ title, description }) {
+  return (
+    <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm hover:shadow-lg hover:border-emerald-200 transition-all">
+      <h3 className="mb-2 text-sm font-bold uppercase tracking-wider text-emerald-600">
+        {title}
+      </h3>
+      <p className="text-sm text-slate-600 leading-relaxed">{description}</p>
+    </div>
   );
 }
 
@@ -915,59 +1120,73 @@ function GithubShowcase() {
   const repos = [
     {
       name: "customer-churn-prediction-system",
-      description:
-        "End-to-end telecom churn prediction with ML models and Streamlit analytics.",
+      description: "End-to-end telecom churn prediction with ML models and Streamlit analytics.",
       language: "Jupyter Notebook",
       url: "https://github.com/Suhas5497/customer-churn-prediction-system",
     },
     {
       name: "sales-intelligence-platform",
-      description:
-        "Retail sales intelligence platform with analytics dashboards and insights.",
+      description: "Retail sales intelligence platform with analytics dashboards and insights.",
       language: "Python",
       url: "https://github.com/Suhas5497/sales-intelligence-platform",
     },
     {
-      name: "Yes-Bank-Stock-Price-Analysis-Future-Price-Prediction",
+      name: "Yes-Bank-Stock-Price-Analysis",
       description: "Yes Bank stock price analysis and LSTM-based forecasting.",
       language: "Jupyter Notebook",
       url: "https://github.com/Suhas5497/Yes-Bank-Stock-Price-Analysis-Future-Price-Prediction",
     },
   ];
+  
   return (
     <Section
       id="github"
       eyebrow="GitHub"
-      title="Selected repositories"
+      title="Selected Repositories"
+      className="bg-white"
     >
-      <div className="grid gap-3 md:grid-cols-3">
+      <div className="grid gap-5 md:grid-cols-3">
         {repos.map((repo) => (
           <a
             key={repo.name}
             href={repo.url}
             target="_blank"
             rel="noopener"
-            className="flex flex-col rounded-2xl border border-slate-800 bg-slate-950/70 p-3 text-xs text-slate-200 shadow-sm shadow-slate-950/60 transition hover:border-sky-500 hover:text-sky-100"
+            data-testid={`repo-${repo.name}`}
+            className="group flex flex-col rounded-2xl border border-slate-200 bg-gradient-to-br from-white to-slate-50 p-5 shadow-sm transition-all hover:shadow-lg hover:border-emerald-200 hover:-translate-y-1"
           >
-            <span className="mb-1 font-semibold">{repo.name}</span>
-            <span className="mb-2 text-[0.78rem] text-slate-300">
+            <div className="mb-3 flex items-center gap-2">
+              <svg className="w-5 h-5 text-slate-400 group-hover:text-emerald-500 transition-colors" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+              </svg>
+              <span className="font-bold text-slate-800 group-hover:text-emerald-600 transition-colors truncate">
+                {repo.name}
+              </span>
+            </div>
+            <p className="mb-3 text-sm text-slate-600 line-clamp-2">
               {repo.description}
-            </span>
-            <span className="mt-auto text-[0.7rem] text-slate-400">
-              {repo.language}
-            </span>
+            </p>
+            <div className="mt-auto flex items-center gap-2 text-xs text-slate-500">
+              <span className="flex items-center gap-1">
+                <span className="h-3 w-3 rounded-full bg-amber-400"></span>
+                {repo.language}
+              </span>
+            </div>
           </a>
         ))}
       </div>
-      <div className="mt-4 text-xs text-slate-400">
-        View all repositories:{" "}
+      <div className="mt-6 text-center">
         <a
           href="https://github.com/Suhas5497"
           target="_blank"
           rel="noopener"
-          className="text-sky-300 hover:text-sky-400"
+          data-testid="view-all-repos-btn"
+          className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-6 py-3 text-sm font-semibold text-slate-700 shadow-sm hover:border-emerald-300 hover:text-emerald-600 hover:shadow-md transition-all"
         >
-          github.com/Suhas5497
+          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+          </svg>
+          View All Repositories on GitHub
         </a>
       </div>
     </Section>
@@ -979,122 +1198,165 @@ function ResumeSection() {
     <Section
       id="resume"
       eyebrow="Resume"
-      title="Download resume"
+      title="Download Resume"
+      className="bg-gradient-to-br from-emerald-50/50 to-teal-50/50"
     >
-      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-        <p className="max-w-xl text-sm text-slate-300">
-          Download a concise PDF version of my resume with education, skills,
-          and project highlights for offline review. Hosted alongside this
-          portfolio for easy sharing.
-        </p>
-        <div className="flex flex-wrap gap-3 text-xs">
-          <a
-            href="/resume.pdf"
-            target="_blank"
-            rel="noopener"
-            className="rounded-full bg-sky-500 px-4 py-2 font-semibold text-slate-950 shadow-md shadow-sky-500/40 hover:brightness-110"
-          >
-            Download Resume
-          </a>
+      <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between rounded-2xl border border-emerald-200 bg-white p-8 shadow-lg">
+        <div>
+          <p className="max-w-xl text-lg text-slate-600 leading-relaxed">
+            Download a concise PDF version of my resume with education, skills,
+            and project highlights for offline review.
+          </p>
         </div>
+        <a
+          href="/resume.pdf"
+          target="_blank"
+          rel="noopener"
+          data-testid="download-resume-btn"
+          className="flex-shrink-0 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 px-8 py-4 text-base font-semibold text-white shadow-lg shadow-emerald-500/30 hover:shadow-xl hover:-translate-y-0.5 transition-all"
+        >
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+          Download Resume
+        </a>
       </div>
     </Section>
   );
 }
 
 function Contact() {
+  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
+  
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const subject = encodeURIComponent(`Portfolio Contact: ${formData.name}`);
+    const body = encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`);
+    window.open(`mailto:suhasdhamapurkar1710@gmail.com?subject=${subject}&body=${body}`);
+  };
+
   return (
     <Section
       id="contact"
       eyebrow="Contact"
-      title="Let’s talk about data"
+      title="Let's Talk About Data"
+      className="bg-white"
     >
-      <div className="grid gap-6 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1.6fr)]">
-        <div className="space-y-3 text-sm text-slate-300">
-          <p>
-            Whether it’s building a new dashboard, exploring a dataset, or
-            shaping a predictive model for your product, I’d be happy to
+      <div className="grid gap-8 lg:grid-cols-[1fr_1.5fr]">
+        <div className="space-y-6">
+          <p className="text-lg text-slate-600 leading-relaxed">
+            Whether it's building a new dashboard, exploring a dataset, or
+            shaping a predictive model for your product, I'd be happy to
             collaborate.
           </p>
-          <ul className="space-y-1 text-[0.9rem]">
-            <li>
-              Email:{" "}
-              <a
-                href="mailto:suhasdhamapurkar1710@gmail.com"
-                className="text-sky-300 hover:text-sky-400"
-              >
-                suhasdhamapurkar1710@gmail.com
-              </a>
-            </li>
-            <li>
-              LinkedIn:{" "}
-              <a
-                href="https://linkedin.com/in/suhas-1710d"
-                target="_blank"
-                rel="noopener"
-                className="text-sky-300 hover:text-sky-400"
-              >
-                linkedin.com/in/suhas-1710d
-              </a>
-            </li>
-            <li>
-              GitHub:{" "}
-              <a
-                href="https://github.com/Suhas5497"
-                target="_blank"
-                rel="noopener"
-                className="text-sky-300 hover:text-sky-400"
-              >
-                github.com/Suhas5497
-              </a>
-            </li>
-          </ul>
+          <div className="space-y-4">
+            <ContactItem
+              icon="email"
+              label="Email"
+              value="suhasdhamapurkar1710@gmail.com"
+              href="mailto:suhasdhamapurkar1710@gmail.com"
+            />
+            <ContactItem
+              icon="linkedin"
+              label="LinkedIn"
+              value="linkedin.com/in/suhas-1710d"
+              href="https://linkedin.com/in/suhas-1710d"
+            />
+            <ContactItem
+              icon="github"
+              label="GitHub"
+              value="github.com/Suhas5497"
+              href="https://github.com/Suhas5497"
+            />
+          </div>
         </div>
         <form
-          className="space-y-3 rounded-2xl border border-slate-800 bg-slate-950/70 p-4 shadow-sm shadow-slate-950/60"
-          onSubmit={(e) => e.preventDefault()}
+          className="rounded-2xl border border-slate-200 bg-gradient-to-br from-white to-slate-50 p-6 shadow-lg"
+          onSubmit={handleSubmit}
         >
-          <div className="grid gap-2 sm:grid-cols-2">
-            <label className="text-xs text-slate-300">
-              Name
+          <div className="grid gap-4 sm:grid-cols-2">
+            <label className="block">
+              <span className="text-sm font-medium text-slate-700">Name</span>
               <input
                 type="text"
-                className="mt-1 w-full rounded-xl border border-slate-800 bg-slate-900 px-2.5 py-1.5 text-xs text-slate-100 outline-none focus:border-sky-500"
+                value={formData.name}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                data-testid="contact-name-input"
+                className="mt-1.5 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 transition-all"
                 placeholder="Your name"
               />
             </label>
-            <label className="text-xs text-slate-300">
-              Email
+            <label className="block">
+              <span className="text-sm font-medium text-slate-700">Email</span>
               <input
                 type="email"
-                className="mt-1 w-full rounded-xl border border-slate-800 bg-slate-900 px-2.5 py-1.5 text-xs text-slate-100 outline-none focus:border-sky-500"
+                value={formData.email}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                data-testid="contact-email-input"
+                className="mt-1.5 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 transition-all"
                 placeholder="you@example.com"
               />
             </label>
           </div>
-          <label className="block text-xs text-slate-300">
-            Message
+          <label className="mt-4 block">
+            <span className="text-sm font-medium text-slate-700">Message</span>
             <textarea
-              rows={3}
-              className="mt-1 w-full rounded-xl border border-slate-800 bg-slate-900 px-2.5 py-1.5 text-xs text-slate-100 outline-none focus:border-sky-500"
+              rows={4}
+              value={formData.message}
+              onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+              data-testid="contact-message-input"
+              className="mt-1.5 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 transition-all resize-none"
               placeholder="Tell me about your role, data challenge, or idea..."
             />
           </label>
           <button
             type="submit"
-            className="w-full rounded-full bg-sky-500 px-4 py-2 text-xs font-semibold text-slate-950 shadow-md shadow-sky-500/40 hover:brightness-110"
+            data-testid="contact-submit-btn"
+            className="mt-5 w-full rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-emerald-500/30 hover:shadow-xl hover:-translate-y-0.5 transition-all"
           >
-            Copy message & open email client
+            Send Message via Email
           </button>
-          <p className="text-[0.7rem] text-slate-500">
-            This form is front-end only. It’s designed to be wired into your
-            preferred email or backend service.
-          </p>
         </form>
       </div>
     </Section>
   );
 }
 
-export default App;
+function ContactItem({ icon, label, value, href }) {
+  const icons = {
+    email: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+      </svg>
+    ),
+    linkedin: (
+      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+      </svg>
+    ),
+    github: (
+      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+      </svg>
+    ),
+  };
 
+  return (
+    <a
+      href={href}
+      target={icon !== "email" ? "_blank" : undefined}
+      rel={icon !== "email" ? "noopener" : undefined}
+      className="flex items-center gap-4 rounded-xl border border-slate-200 bg-white p-4 shadow-sm hover:border-emerald-200 hover:shadow-md transition-all group"
+    >
+      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-50 text-emerald-600 group-hover:bg-emerald-100 transition-colors">
+        {icons[icon]}
+      </div>
+      <div>
+        <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">{label}</p>
+        <p className="text-sm font-medium text-slate-700 group-hover:text-emerald-600 transition-colors">{value}</p>
+      </div>
+    </a>
+  );
+}
+
+export default App;

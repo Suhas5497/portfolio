@@ -36,7 +36,7 @@ const churnData = [
 ];
 
 const DEMO_URLS = {
-  churn: "https://customer-churn-demo.streamlit.app",
+  churn: "https://customer-churn-prediction-system-oneq3amaedjugshgt599ip.streamlit.app/",
   retail: "https://sales-intelligence-platform-dovb9bnzxw69tvcorxpqqz.streamlit.app/"
 };
 

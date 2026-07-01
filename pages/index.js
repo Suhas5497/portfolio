@@ -166,7 +166,7 @@ const SKILLS = [
   {
     label: 'Statistics & Analytics',
     color: 'primary',
-    items: ['Descriptive Statistics', 'Probability Distributions', 'Hypothesis Testing', 'A/B Testing', 'Regression Analysis', 'Correlation & Covariance', 'Confidence Intervals', 'Feature Engineering', 'RFM Segmentation', 'Cohort Analysis', 'Pareto Analysis', 'Time Series Analysis'],
+    items: ['Statistical Analysis', 'Hypothesis Testing', 'A/B Testing', 'Cohort Analysis', 'Descriptive Statistics', 'Probability Distributions', 'Regression Analysis', 'Correlation & Covariance', 'Confidence Intervals', 'Feature Engineering', 'RFM Segmentation', 'Pareto Analysis', 'Time Series Analysis'],
   },
   {
     label: 'Python & Data Science',
@@ -253,7 +253,7 @@ export default function Home() {
 
       {/* ── Nav ── */}
       <header className="fixed inset-x-0 top-0 z-50 border-b border-[rgba(255,255,255,0.06)] bg-[rgba(10,10,15,0.85)] backdrop-blur-xl">
-        <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+        <div className="max-w-[1360px] mx-auto px-8 h-16 flex items-center justify-between">
           <button onClick={() => goto('home')} className="flex items-center gap-2.5 group">
             <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white font-display font-bold text-xs shadow-lg shadow-primary/30">
               SD
@@ -347,7 +347,7 @@ function HeroSection({ goto }) {
 
   return (
     <section id="home" className="min-h-screen flex flex-col justify-center pt-24 pb-16">
-      <div className="max-w-6xl mx-auto px-6 w-full">
+      <div className="max-w-[1360px] mx-auto px-8 w-full">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
 
           {/* Left: Text */}
@@ -479,7 +479,7 @@ function HeroSection({ goto }) {
 function ExperienceSection() {
   return (
     <section id="experience" className="py-28">
-      <div className="max-w-6xl mx-auto px-6">
+      <div className="max-w-[1360px] mx-auto px-8">
         <motion.p {...fadeUp()} className="section-label">Experience</motion.p>
         <motion.h2 {...fadeUp(0.05)} className="font-display font-bold text-3xl sm:text-4xl text-text-primary mb-14">
           Where I've built things
@@ -528,13 +528,48 @@ function ExperienceSection() {
 }
 
 // ── Projects ──────────────────────────────────────────────────────────────────
+function FeaturedVideo({ featured }) {
+  const [playing, setPlaying] = useState(false);
+  return (
+    <div className="relative bg-black/40 flex items-center justify-center min-h-[280px] lg:min-h-0 cursor-pointer overflow-hidden"
+      onClick={() => !playing && setPlaying(true)}>
+      {playing ? (
+        <iframe
+          src={featured.video}
+          className="w-full h-full min-h-[280px] absolute inset-0"
+          allow="autoplay"
+          allowFullScreen
+          title="Resilytics Product Walkthrough"
+        />
+      ) : (
+        <>
+          <img
+            src={featured.image}
+            alt="Resilytics Dashboard"
+            className="w-full h-full object-cover absolute inset-0"
+          />
+          <div className="absolute inset-0 bg-black/40" />
+          <div className="relative z-10 flex flex-col items-center gap-3 group-hover:scale-105 transition-transform">
+            <div className="w-16 h-16 rounded-full bg-accent/90 backdrop-blur-sm flex items-center justify-center shadow-lg shadow-accent/40 hover:bg-accent transition-colors">
+              <svg className="w-7 h-7 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M8 5v14l11-7z" />
+              </svg>
+            </div>
+            <p className="text-white/80 text-xs font-semibold tracking-wider uppercase">Watch Product Walkthrough</p>
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
 function ProjectsSection() {
   const featured = PROJECTS.find((p) => p.featured);
   const rest = PROJECTS.filter((p) => !p.featured);
 
   return (
     <section id="projects" className="py-28">
-      <div className="max-w-6xl mx-auto px-6">
+      <div className="max-w-[1360px] mx-auto px-8">
         <motion.p {...fadeUp()} className="section-label">Projects</motion.p>
         <motion.h2 {...fadeUp(0.05)} className="font-display font-bold text-3xl sm:text-4xl text-text-primary mb-14">
           Analytics & engineering work
@@ -596,16 +631,8 @@ function ProjectsSection() {
               </div>
             </div>
 
-            {/* Video embed */}
-            <div className="relative bg-black/40 flex items-center justify-center min-h-[280px] lg:min-h-0">
-              <iframe
-                src={featured.video}
-                className="w-full h-full min-h-[280px]"
-                allow="autoplay"
-                allowFullScreen
-                title="Resilytics Product Walkthrough"
-              />
-            </div>
+            {/* Click-to-play video */}
+            <FeaturedVideo featured={featured} />
           </div>
         </motion.div>
 
@@ -622,100 +649,179 @@ function ProjectsSection() {
 
 function ProjectCard({ project, delay }) {
   const [hovered, setHovered] = useState(false);
-  const images = project.images || [project.image];
-  const [imgIdx, setImgIdx] = useState(0);
-
-  const prevImg = (e) => { e.stopPropagation(); setImgIdx((i) => (i - 1 + images.length) % images.length); };
-  const nextImg = (e) => { e.stopPropagation(); setImgIdx((i) => (i + 1) % images.length); };
+  const [dashboardOpen, setDashboardOpen] = useState(false);
+  const [lightboxIdx, setLightboxIdx] = useState(null);
+  const dashboardImages = project.images || [];
 
   return (
-    <motion.article
-      {...fadeUp(delay)}
-      className="glass rounded-2xl overflow-hidden flex flex-col group"
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-    >
-      <div className="relative h-48 overflow-hidden bg-surface">
-        <img
-          src={images[imgIdx]}
-          alt={`${project.title} – screenshot ${imgIdx + 1}`}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-bg/70 via-transparent to-transparent" />
+    <>
+      <motion.article
+        {...fadeUp(delay)}
+        className="glass rounded-2xl overflow-hidden flex flex-col group"
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+      >
+        <div className="relative h-48 overflow-hidden bg-surface">
+          <img
+            src={project.image}
+            alt={`${project.title} – cover`}
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-bg/70 via-transparent to-transparent" />
 
-        {/* Image carousel controls */}
-        {images.length > 1 && (
-          <>
-            <button onClick={prevImg}
-              className="absolute left-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-black/60 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white text-base leading-none hover:bg-black/80 transition-colors z-10">
-              ‹
-            </button>
-            <button onClick={nextImg}
-              className="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-black/60 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white text-base leading-none hover:bg-black/80 transition-colors z-10">
-              ›
-            </button>
-            <div className="absolute bottom-2.5 left-0 right-0 flex justify-center gap-1.5 z-10">
-              {images.map((_, i) => (
-                <button key={i} onClick={(e) => { e.stopPropagation(); setImgIdx(i); }}
-                  className={`rounded-full transition-all ${i === imgIdx ? 'w-4 h-1.5 bg-white' : 'w-1.5 h-1.5 bg-white/35 hover:bg-white/60'}`} />
-              ))}
+          <AnimatePresence>
+            {hovered && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.22 }}
+                className="absolute inset-0 bg-[#0a0a0f]/82 backdrop-blur-sm flex items-end p-5"
+              >
+                <div>
+                  <p className="text-[10px] uppercase tracking-[0.15em] text-text-muted mb-1.5 font-semibold">Key Outcome</p>
+                  <p className="text-sm text-text-primary leading-snug font-medium">{project.outcome}</p>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+
+        <div className="p-6 flex flex-col flex-1">
+          <h3 className="font-display font-bold text-base text-text-primary mb-1 group-hover:text-primary-light transition-colors">
+            {project.title}
+          </h3>
+          <p className="text-xs text-primary-light font-semibold mb-3">{project.tagline}</p>
+          <p className="text-sm text-text-secondary leading-relaxed mb-4 flex-1">{project.description}</p>
+
+          <div className="flex flex-wrap gap-1.5 mb-5">
+            {project.tech.map((t) => (
+              <span key={t} className="skill-pill text-xs">{t}</span>
+            ))}
+          </div>
+
+          <div className="flex gap-3 pt-4 border-t border-[rgba(255,255,255,0.06)]">
+            {project.github && (
+              <a href={project.github} target="_blank" rel="noopener noreferrer"
+                className="flex items-center gap-1.5 text-sm text-text-muted hover:text-primary-light transition-colors">
+                <GithubIcon className="w-4 h-4" />
+                GitHub
+              </a>
+            )}
+            {project.demo ? (
+              <a href={project.demo} target="_blank" rel="noopener noreferrer"
+                className="flex items-center gap-1.5 text-sm font-semibold text-accent hover:text-accent-dark transition-colors ml-auto">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                    d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                </svg>
+                Demo
+              </a>
+            ) : (
+              <span className="text-xs text-text-muted/50 ml-auto py-1">Demo coming soon</span>
+            )}
+          </div>
+
+          {/* Expandable dashboard gallery */}
+          {dashboardImages.length > 0 && (
+            <div className="mt-3 pt-3 border-t border-[rgba(255,255,255,0.06)]">
+              <button
+                onClick={() => setDashboardOpen((o) => !o)}
+                className="w-full flex items-center justify-between text-xs font-semibold text-primary-light hover:text-primary transition-colors py-1"
+              >
+                <span className="flex items-center gap-2">
+                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                      d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  View Dashboards ({dashboardImages.length})
+                </span>
+                <svg className={`w-3.5 h-3.5 transition-transform ${dashboardOpen ? 'rotate-180' : ''}`}
+                  fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+
+              <AnimatePresence>
+                {dashboardOpen && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                    className="overflow-hidden"
+                  >
+                    <div className="grid grid-cols-2 gap-2 pt-3">
+                      {dashboardImages.map((img, i) => (
+                        <button key={i} onClick={() => setLightboxIdx(i)}
+                          className="relative h-24 overflow-hidden rounded-lg bg-surface border border-[rgba(255,255,255,0.07)] hover:border-primary/40 transition-colors group/thumb">
+                          <img src={img} alt={`Dashboard ${i + 1}`}
+                            className="w-full h-full object-cover transition-transform duration-300 group-hover/thumb:scale-105" />
+                          <div className="absolute inset-0 bg-black/0 group-hover/thumb:bg-black/30 transition-colors flex items-center justify-center">
+                            <svg className="w-5 h-5 text-white opacity-0 group-hover/thumb:opacity-100 transition-opacity"
+                              fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                            </svg>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
-          </>
-        )}
+          )}
+        </div>
+      </motion.article>
 
-        {/* Hover overlay — dark glass instead of solid purple */}
-        <AnimatePresence>
-          {hovered && (
+      {/* Lightbox */}
+      <AnimatePresence>
+        {lightboxIdx !== null && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[200] bg-black/90 backdrop-blur-sm flex items-center justify-center p-4"
+            onClick={() => setLightboxIdx(null)}
+          >
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.22 }}
-              className="absolute inset-0 bg-[#0a0a0f]/82 backdrop-blur-sm flex items-end p-5"
+              initial={{ scale: 0.92 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0.92 }}
+              className="relative max-w-5xl w-full"
+              onClick={(e) => e.stopPropagation()}
             >
-              <div>
-                <p className="text-[10px] uppercase tracking-[0.15em] text-text-muted mb-1.5 font-semibold">Key Outcome</p>
-                <p className="text-sm text-text-primary leading-snug font-medium">{project.outcome}</p>
+              <img src={dashboardImages[lightboxIdx]} alt={`Dashboard ${lightboxIdx + 1}`}
+                className="w-full h-auto rounded-xl shadow-2xl" />
+              <div className="absolute top-3 right-3 flex gap-2">
+                <button onClick={() => setLightboxIdx(null)}
+                  className="w-9 h-9 rounded-full bg-black/70 border border-white/10 flex items-center justify-center text-white hover:bg-white/10 transition-colors">
+                  ✕
+                </button>
               </div>
+              {dashboardImages.length > 1 && (
+                <div className="absolute inset-y-0 left-0 right-0 flex items-center justify-between pointer-events-none px-3">
+                  <button
+                    className="pointer-events-auto w-10 h-10 rounded-full bg-black/70 border border-white/10 flex items-center justify-center text-white text-lg hover:bg-white/10 transition-colors"
+                    onClick={() => setLightboxIdx((i) => (i - 1 + dashboardImages.length) % dashboardImages.length)}>
+                    ‹
+                  </button>
+                  <button
+                    className="pointer-events-auto w-10 h-10 rounded-full bg-black/70 border border-white/10 flex items-center justify-center text-white text-lg hover:bg-white/10 transition-colors"
+                    onClick={() => setLightboxIdx((i) => (i + 1) % dashboardImages.length)}>
+                    ›
+                  </button>
+                </div>
+              )}
+              <p className="text-center text-white/50 text-sm mt-3">
+                {lightboxIdx + 1} / {dashboardImages.length} — click outside to close
+              </p>
             </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-
-      <div className="p-6 flex flex-col flex-1">
-        <h3 className="font-display font-bold text-base text-text-primary mb-1 group-hover:text-primary-light transition-colors">
-          {project.title}
-        </h3>
-        <p className="text-xs text-primary-light font-semibold mb-3">{project.tagline}</p>
-        <p className="text-sm text-text-secondary leading-relaxed mb-4 flex-1">{project.description}</p>
-
-        <div className="flex flex-wrap gap-1.5 mb-5">
-          {project.tech.map((t) => (
-            <span key={t} className="skill-pill text-xs">{t}</span>
-          ))}
-        </div>
-
-        <div className="flex gap-3 pt-4 border-t border-[rgba(255,255,255,0.06)]">
-          <a href={project.github} target="_blank" rel="noopener noreferrer"
-            className="flex items-center gap-1.5 text-sm text-text-muted hover:text-primary-light transition-colors">
-            <GithubIcon className="w-4 h-4" />
-            GitHub
-          </a>
-          {project.demo ? (
-            <a href={project.demo} target="_blank" rel="noopener noreferrer"
-              className="flex items-center gap-1.5 text-sm font-semibold text-accent hover:text-accent-dark transition-colors ml-auto">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                  d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-              </svg>
-              Demo
-            </a>
-          ) : (
-            <span className="text-xs text-text-muted/50 ml-auto py-1">Demo coming soon</span>
-          )}
-        </div>
-      </div>
-    </motion.article>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 }
 
@@ -723,7 +829,7 @@ function ProjectCard({ project, delay }) {
 function SkillsSection() {
   return (
     <section id="skills" className="py-28">
-      <div className="max-w-6xl mx-auto px-6">
+      <div className="max-w-[1360px] mx-auto px-8">
         <motion.p {...fadeUp()} className="section-label">Skills</motion.p>
         <motion.h2 {...fadeUp(0.05)} className="font-display font-bold text-3xl sm:text-4xl text-text-primary mb-4">
           Technical expertise
@@ -769,7 +875,7 @@ function SkillsSection() {
 function EducationSection() {
   return (
     <section id="education" className="py-28">
-      <div className="max-w-6xl mx-auto px-6">
+      <div className="max-w-[1360px] mx-auto px-8">
         <motion.p {...fadeUp()} className="section-label">Education</motion.p>
         <motion.h2 {...fadeUp(0.05)} className="font-display font-bold text-3xl sm:text-4xl text-text-primary mb-14">
           Academic background
@@ -810,6 +916,56 @@ function EducationSection() {
 
 // ── About ─────────────────────────────────────────────────────────────────────
 function AboutSection() {
+  const highlights = [
+    {
+      icon: (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+            d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+        </svg>
+      ),
+      color: 'primary',
+      label: 'Regional Math Champion',
+      value: '2nd Rank',
+      sub: 'NVS Mathematics Exhibition · Regional Level · Class XI',
+    },
+    {
+      icon: (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+        </svg>
+      ),
+      color: 'accent',
+      label: 'Production SaaS',
+      value: 'Resilytics',
+      sub: 'Live B2B platform · FastAPI + DuckDB + React',
+    },
+    {
+      icon: (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+            d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+      ),
+      color: 'primary',
+      label: 'National Hackathon',
+      value: 'Top 5%',
+      sub: 'Ranked 8th of 150+ · Imarticus Data Science Hackathon',
+    },
+    {
+      icon: (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+        </svg>
+      ),
+      color: 'accent',
+      label: 'Analytics Impact',
+      value: '35% faster',
+      sub: 'ETL cycle reduction · Labmentix · 2025',
+    },
+  ];
+
   const strengths = [
     {
       label: 'Production-grade output',
@@ -821,50 +977,94 @@ function AboutSection() {
     },
     {
       label: 'Competitive-grade analytical depth',
-      body: 'Ranked 8th of 150+ analysts nationwide at the Imarticus Data Science Hackathon (Apr 2026, Top 5%) — the same rigour I bring to every client engagement.',
+      body: 'Ranked 8th of 150+ analysts nationwide at the Imarticus Data Science Hackathon — the same rigour I bring to every client engagement.',
     },
   ];
 
   return (
     <section id="about" className="py-28">
-      <div className="max-w-6xl mx-auto px-6">
+      <div className="max-w-[1360px] mx-auto px-8">
         <motion.p {...fadeUp()} className="section-label">About Me</motion.p>
-        <motion.h2 {...fadeUp(0.05)} className="font-display font-bold text-3xl sm:text-4xl text-text-primary mb-10">
+        <motion.h2 {...fadeUp(0.05)} className="font-display font-bold text-3xl sm:text-4xl text-text-primary mb-12">
           From data foundations to production systems
         </motion.h2>
 
-        <motion.div {...fadeUp(0.1)} className="max-w-3xl space-y-5 text-text-secondary leading-relaxed text-[15px] mb-14">
-          <p>
-            My analytical instincts were forged early — a CBSE scholar at Jawahar Navodaya Vidyalaya, Ratnagiri,
-            where I secured <span className="text-text-primary font-medium">2nd rank at Regional level</span> in
-            the Navodaya Vidyalaya Samiti Mathematics Exhibition. That same precision carried through a B.Tech in
-            AI & ML and into industry.
-          </p>
-          <p>
-            At <span className="text-text-primary font-medium">Labmentix</span>, I compressed weekly ETL cycles
-            by 35%, productionized an XGBoost model that surfaced the top three churn drivers for the retention
-            team, and replaced four manual Power BI reports that were consuming six analyst-hours per week.
-          </p>
-          <p>
-            While completing my PG Program at Imarticus Learning, I designed and shipped every layer of{' '}
-            <a href="https://resilytics.in" target="_blank" rel="noopener noreferrer"
-              className="text-accent hover:underline underline-offset-4 font-medium">Resilytics</a>{' '}
-            solo — data ingestion, DuckDB analytics warehouse, Monte Carlo simulation engine, and a React/FastAPI
-            production app with full tenant isolation. Raw upload to board-ready PDF executive report.
-          </p>
-          <p className="text-text-primary font-medium italic">
-            I think in pipelines and outcomes. Whether it's SQL or Altman Z-Scores, the end goal is always
-            the same: a decision someone can act on.
-          </p>
-        </motion.div>
+        {/* Two-column layout */}
+        <div className="grid lg:grid-cols-[1fr_380px] gap-12 mb-16 items-start">
+          {/* Left: narrative */}
+          <motion.div {...fadeUp(0.1)} className="space-y-5 text-text-secondary leading-relaxed text-[15px]">
+            <p>
+              My analytical instincts were forged at{' '}
+              <span className="text-text-primary font-semibold">Jawahar Navodaya Vidyalaya, Ratnagiri</span> — a
+              CBSE residential school of national merit. In Class XI, competing across schools from the entire
+              region, I secured{' '}
+              <span className="text-primary-light font-semibold">2nd Rank at Regional Level</span>{' '}
+              in the Navodaya Vidyalaya Samiti Mathematics Exhibition. That early experience of turning rigorous
+              mathematical reasoning into recognised results has defined how I approach every analytical problem
+              since.
+            </p>
+            <p>
+              Through a B.Tech in AI &amp; ML and a PG Program in Data Science &amp; Analytics at{' '}
+              <span className="text-text-primary font-semibold">Imarticus Learning</span>, I built systems — not
+              just notebooks. At the Imarticus Data Science Hackathon in April 2026, competing against 150+
+              analysts, I placed{' '}
+              <span className="text-primary-light font-semibold">8th nationally (Top 5%)</span>.
+            </p>
+            <p>
+              At <span className="text-text-primary font-semibold">Labmentix Pvt. Ltd.</span>, I compressed
+              weekly ETL cycles by 35%, productionized an XGBoost churn model that surfaced the top three
+              retention levers, and eliminated four recurring manual Power BI reports consuming six analyst-hours
+              per week.
+            </p>
+            <p>
+              While studying, I designed and shipped every layer of{' '}
+              <a href="https://resilytics.in" target="_blank" rel="noopener noreferrer"
+                className="text-accent hover:underline underline-offset-4 font-semibold">Resilytics</a>{' '}
+              solo — multi-tenant data ingestion, DuckDB analytics warehouse, Monte Carlo simulation engine, Basel
+              III VaR-95 risk scoring, and a React/FastAPI production app with full tenant isolation. Raw CSV
+              upload to board-ready PDF executive report.
+            </p>
+            <p className="border-l-2 border-primary/40 pl-4 py-1 text-text-primary font-medium italic">
+              I think in pipelines and outcomes. Whether it&apos;s SQL or Altman Z-Scores, the end goal is always
+              the same: a decision someone can act on.
+            </p>
+          </motion.div>
 
-        {/* Why hire me */}
-        <motion.h3 {...fadeUp(0.15)} className="font-display font-bold text-xl text-text-primary mb-6">
+          {/* Right: achievement cards 2x2 grid */}
+          <motion.div {...fadeUp(0.15)} className="grid grid-cols-2 gap-3">
+            {highlights.map((h, i) => (
+              <motion.div key={i} {...fadeUp(0.15 + i * 0.07)}
+                className={`glass rounded-xl p-4 flex flex-col gap-2.5 border transition-colors ${
+                  h.color === 'accent'
+                    ? 'border-accent/15 hover:border-accent/35'
+                    : 'border-primary/15 hover:border-primary/35'
+                }`}>
+                <div className={`w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 ${
+                  h.color === 'accent' ? 'bg-accent/10 text-accent' : 'bg-primary/10 text-primary-light'
+                }`}>
+                  {h.icon}
+                </div>
+                <div>
+                  <p className={`font-display font-bold text-lg leading-tight ${
+                    h.color === 'accent' ? 'text-accent' : 'text-primary-light'
+                  }`}>
+                    {h.value}
+                  </p>
+                  <p className="text-text-primary text-xs font-semibold mt-0.5 mb-1">{h.label}</p>
+                  <p className="text-text-muted text-[11px] leading-snug">{h.sub}</p>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+
+        {/* Why work with me */}
+        <motion.h3 {...fadeUp(0.2)} className="font-display font-bold text-xl text-text-primary mb-6">
           Why work with me
         </motion.h3>
         <div className="grid sm:grid-cols-3 gap-5">
           {strengths.map((s, i) => (
-            <motion.div key={i} {...fadeUp(0.15 + i * 0.08)} className="glass rounded-2xl p-6">
+            <motion.div key={i} {...fadeUp(0.2 + i * 0.08)} className="glass rounded-2xl p-6">
               <div className="w-8 h-0.5 bg-primary mb-5 rounded-full" />
               <h4 className="font-display font-semibold text-sm text-primary-light mb-3 leading-snug">{s.label}</h4>
               <p className="text-sm text-text-secondary leading-relaxed">{s.body}</p>
@@ -930,7 +1130,7 @@ function ContactSection() {
 
   return (
     <section id="contact" className="py-28">
-      <div className="max-w-6xl mx-auto px-6">
+      <div className="max-w-[1360px] mx-auto px-8">
         <motion.p {...fadeUp()} className="section-label">Contact</motion.p>
         <motion.h2 {...fadeUp(0.05)} className="font-display font-bold text-3xl sm:text-4xl text-text-primary mb-4">
           Let's work together

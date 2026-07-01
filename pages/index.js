@@ -119,7 +119,7 @@ const PROJECTS = [
       '/assets/Retail Sales Intelligence Dashboard/page3_target_achievement.png',
       '/assets/Retail Sales Intelligence Dashboard/page4_key_risk.png',
     ],
-    image: '/assets/Retail Sales Intelligence Dashboard/page1_returns_delivery.png',
+    image: '/assets/retail-sales-dashboard.png',
   },
   {
     id: 'yesbank',
@@ -164,9 +164,9 @@ const SKILLS = [
     items: ['SQL', 'Power BI', 'DAX', 'Excel', 'Tableau', 'Star Schema', 'Drill-Through', 'RLS'],
   },
   {
-    label: 'Statistics & Analytics',
+    label: 'Statistics',
     color: 'primary',
-    items: ['Statistical Analysis', 'Hypothesis Testing', 'A/B Testing', 'Cohort Analysis', 'Descriptive Statistics', 'Probability Distributions', 'Regression Analysis', 'Correlation & Covariance', 'Confidence Intervals', 'Feature Engineering', 'RFM Segmentation', 'Pareto Analysis', 'Time Series Analysis'],
+    items: ['Statistical Analysis', 'Hypothesis Testing', 'A/B Testing', 'Cohort Analysis', 'Descriptive Statistics', 'Probability Distributions'],
   },
   {
     label: 'Python & Data Science',
@@ -427,23 +427,25 @@ function HeroSection({ goto }) {
             transition={{ duration: 0.65, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
             className="flex justify-center lg:justify-end"
           >
-            <div className="relative w-64 h-64 sm:w-80 sm:h-80">
-              {/* Outer glow ring */}
-              <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary/30 via-accent/20 to-primary/10 blur-2xl animate-pulse-slow" />
-              {/* Ring border */}
-              <div className="absolute inset-2 rounded-full border-2 border-primary/30" />
-              {/* Photo container */}
-              <div className="absolute inset-4 rounded-full overflow-hidden border-2 border-primary/20 shadow-2xl">
+            <div className="relative w-72 h-72 sm:w-[360px] sm:h-[360px]">
+              {/* Outer glow */}
+              <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary/40 via-accent/25 to-primary/15 blur-3xl animate-pulse-slow" />
+              {/* Decorative ring */}
+              <div className="absolute inset-1 rounded-full border border-primary/25" />
+              {/* Inner accent ring */}
+              <div className="absolute inset-3 rounded-full border border-accent/15" />
+              {/* Photo */}
+              <div className="absolute inset-5 rounded-full overflow-hidden border-2 border-primary/30 shadow-[0_0_60px_rgba(139,92,246,0.25)]">
                 {photoError ? (
                   <div className="w-full h-full bg-gradient-to-br from-surface-2 to-surface flex items-center justify-center">
-                    <span className="font-display font-bold text-4xl gradient-text">SD</span>
+                    <span className="font-display font-bold text-5xl gradient-text">SD</span>
                   </div>
                 ) : (
                   <img
                     src="/assets/profile.jpg"
                     alt="Suhas Dhamapurkar"
                     onError={() => setPhotoError(true)}
-                    className="w-full h-full object-cover object-top"
+                    className="w-full h-full object-cover object-[center_15%]"
                   />
                 )}
               </div>
@@ -881,33 +883,26 @@ function EducationSection() {
           Academic background
         </motion.h2>
 
-        <div className="relative max-w-2xl">
-          {/* Vertical line */}
-          <div className="absolute left-5 top-2 bottom-2 w-px bg-gradient-to-b from-primary via-primary/40 to-transparent" />
-
-          <div className="space-y-8">
-            {EDUCATION.map((edu, i) => (
-              <motion.div key={i} {...fadeUp(i * 0.08)} className="flex gap-6">
-                <div className="flex-shrink-0 w-10 flex justify-center">
-                  <div className={`mt-1.5 ${edu.color === 'primary' ? 'timeline-dot' : 'timeline-dot-accent'}`} />
-                </div>
-                <div className="glass rounded-2xl p-6 flex-1">
-                  <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-2">
-                    <h3 className="font-display font-bold text-base text-text-primary leading-snug">
-                      {edu.degree}
-                    </h3>
-                    <span className="glass rounded-full px-3 py-1 text-xs font-medium text-text-secondary whitespace-nowrap">
-                      {edu.period}
-                    </span>
-                  </div>
-                  <p className={`text-sm font-semibold mb-2 ${edu.color === 'primary' ? 'text-primary-light' : 'text-accent'}`}>
-                    {edu.institution}
-                  </p>
-                  <p className="text-sm text-text-secondary leading-relaxed">{edu.detail}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
+        <div className="grid sm:grid-cols-2 gap-5">
+          {EDUCATION.map((edu, i) => (
+            <motion.div key={i} {...fadeUp(i * 0.08)} className="glass rounded-2xl p-6 flex flex-col gap-3">
+              <div className="flex items-start justify-between gap-3">
+                <div className={`w-2 h-2 rounded-full mt-1.5 flex-shrink-0 ${edu.color === 'primary' ? 'bg-primary shadow-[0_0_8px_rgba(139,92,246,0.7)]' : 'bg-accent shadow-[0_0_8px_rgba(6,182,212,0.7)]'}`} />
+                <span className="glass rounded-full px-3 py-1 text-xs font-medium text-text-secondary whitespace-nowrap ml-auto">
+                  {edu.period}
+                </span>
+              </div>
+              <div>
+                <h3 className="font-display font-bold text-base text-text-primary leading-snug mb-1">
+                  {edu.degree}
+                </h3>
+                <p className={`text-sm font-semibold mb-2 ${edu.color === 'primary' ? 'text-primary-light' : 'text-accent'}`}>
+                  {edu.institution}
+                </p>
+                <p className="text-sm text-text-secondary leading-relaxed">{edu.detail}</p>
+              </div>
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>
@@ -1060,7 +1055,7 @@ function AboutSection() {
 
         {/* Why work with me */}
         <motion.h3 {...fadeUp(0.2)} className="font-display font-bold text-xl text-text-primary mb-6">
-          Why work with me
+          Why hire me
         </motion.h3>
         <div className="grid sm:grid-cols-3 gap-5">
           {strengths.map((s, i) => (

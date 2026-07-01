@@ -72,58 +72,71 @@ const PROJECTS = [
     github: 'https://github.com/Suhas5497/Resilytics',
     demo: 'https://resilytics.in',
     video: 'https://drive.google.com/file/d/1xa5auWjSEbmHqArwoHLRRlr1A08TEjMh/preview',
-    image: '/assets/resilytics-dashboard.png',
+    image: '/assets/resylytics.png',
   },
   {
     id: 'ecommerce',
     featured: false,
     title: 'E-Commerce Business Analytics',
-    tagline: 'Imarticus PG Capstone Project',
+    tagline: 'Imarticus PG Capstone · SQL & Power BI',
     description:
-      'Analyzed 100,000+ orders across 9 relational tables using advanced SQL and Power BI to surface actionable business insights.',
-    problem: 'No consolidated view of customer value, product revenue concentration, or delivery failures.',
+      'Dissected 100,000+ orders across 9 relational tables to surface revenue concentration, customer value tiers, and delivery-failure root causes.',
+    problem: 'No single view of customer lifetime value, category revenue mix, or the delivery delays bleeding margins.',
     approach:
-      'Advanced SQL (CTEs, window functions RANK/LAG/NTILE, stored procedures), RFM segmentation, Pareto analysis, cohort retention, and Power BI drill-through dashboard.',
+      'Advanced SQL — CTEs, window functions (RANK, LAG, NTILE), stored procedures — then RFM segmentation, Pareto analysis, cohort retention, and a Power BI drill-through dashboard.',
     outcome:
-      'Top 5 categories = 62% of revenue (Pareto); cohort retention table; drill-through report exposing delivery-delay root causes.',
-    tech: ['SQL', 'Power BI', 'DAX', 'Python', 'CTEs', 'Window Functions'],
+      'Top 5 categories drove 62% of revenue (Pareto); full cohort retention matrix built; drill-through dashboard pinpointed delivery-delay root causes by carrier and region.',
+    tech: ['SQL', 'Power BI', 'DAX', 'Python', 'CTEs', 'Window Functions', 'RFM Analysis'],
     github: 'https://github.com/Suhas5497/ecommerce-sql-analytics',
     demo: null,
-    image: '/assets/churn-model.png',
+    images: [
+      '/assets/E-Commerce Business Analytics/ecom-1.png',
+      '/assets/E-Commerce Business Analytics/ecom-2.png',
+      '/assets/E-Commerce Business Analytics/ecom-3.png',
+      '/assets/E-Commerce Business Analytics/ecom-4.png',
+      '/assets/E-Commerce Business Analytics/ecom-5.png',
+    ],
+    image: '/assets/ecom-cover.png',
   },
   {
     id: 'retail',
     featured: false,
     title: 'Retail Sales Intelligence Dashboard',
-    tagline: 'Power BI · 4-Page Interactive Report',
+    tagline: 'Power BI · 4-Page Executive Dashboard',
     description:
-      'Built a 4-page interactive Power BI dashboard analyzing ₹29.4L in sales across 2015–2018 with drill-down, KPI tracking, and risk action plan.',
-    problem: 'Regional managers had no visibility into delivery delays, return rate trends, or target gaps.',
+      'Four-page interactive Power BI report dissecting ₹29.4L in sales (2015–2018) — returns & delivery, P&L, target tracking, and a ranked risk action plan.',
+    problem: 'Regional managers were blind to delivery delays, return-rate creep, and target shortfalls until the end of the quarter.',
     approach:
-      'KPI cards, YoY DAX measures, dynamic slicers, decomposition tree, and a dedicated risk action plan page.',
+      'Star-schema data model, KPI cards, YoY DAX measures, dynamic slicers, and a decomposition tree for root-cause drill-down.',
     outcome:
-      'Central region = 60% of sales (concentration risk); Standard Class averaged 5-day delays; return rate rose from 5.4% to 6.9%; 88.48% target achievement tracked.',
+      'Central region concentration risk flagged (60% of revenue); Standard Class delays averaging 5 days exposed; return rate trend (5.4% → 6.9%) isolated by category; 88.48% target achievement tracked live.',
     tech: ['Power BI', 'DAX', 'Star Schema', 'Excel'],
     github: 'https://github.com/Suhas5497/sales-intelligence-platform',
     demo: 'https://sales-intelligence-platform-dovb9bnzxw69tvcorxpqqz.streamlit.app/',
-    image: '/assets/retail-sales-dashboard.png',
+    images: [
+      '/assets/Retail Sales Intelligence Dashboard/page1_returns_delivery.png',
+      '/assets/Retail Sales Intelligence Dashboard/page2_sales_profit.png',
+      '/assets/Retail Sales Intelligence Dashboard/page3_target_achievement.png',
+      '/assets/Retail Sales Intelligence Dashboard/page4_key_risk.png',
+    ],
+    image: '/assets/Retail Sales Intelligence Dashboard/page1_returns_delivery.png',
   },
   {
     id: 'yesbank',
     featured: false,
     title: 'Yes Bank Stock Price Forecasting',
-    tagline: 'Time Series / ML · SARIMA + Random Forest',
+    tagline: 'Time Series · SARIMA + Random Forest',
     description:
-      'Analyzed 15 years of Yes Bank stock data and built ML forecasting models to study volatility around the 2018 fraud case.',
-    problem: 'Quantify the risk and price trajectory of a fraud-impacted stock using statistical and ML models.',
+      'Fifteen years of Yes Bank data stress-tested against the 2018 fraud crisis — with SARIMA, ARIMA, and Random Forest models benchmarked head-to-head.',
+    problem: 'Quantify the risk signature of a fraud-impacted stock and produce a defensible price forecast for risk-aware investors.',
     approach:
-      'Compared Random Forest, ARIMA, and SARIMA models; statistical analysis of the ~96% price decline from the 2018 peak.',
+      'Statistical decomposition of the ~96% price collapse from the 2018 peak; three forecasting models compared on MAE, RMSE, and directional accuracy.',
     outcome:
-      'SARIMA forecast: ₹15.80 next month; Random Forest R² = 0.97 (MAE ₹14.96, RMSE ₹23.57).',
-    tech: ['Python', 'SARIMA', 'ARIMA', 'Random Forest', 'Pandas', 'Matplotlib'],
+      'SARIMA outperformed all baselines — next-month forecast ₹15.80; Random Forest R² = 0.97 (MAE ₹14.96, RMSE ₹23.57) on intra-month price features.',
+    tech: ['Python', 'SARIMA', 'ARIMA', 'Random Forest', 'Pandas', 'Matplotlib', 'Statsmodels'],
     github: 'https://github.com/Suhas5497/Yes-Bank-Stock-Price-Analysis-Future-Price-Prediction',
     demo: null,
-    image: '/assets/stock-forecast-chart.png',
+    image: '/assets/yesbank-forecast.png',
   },
   {
     id: 'churn',
@@ -151,6 +164,11 @@ const SKILLS = [
     items: ['SQL', 'Power BI', 'DAX', 'Excel', 'Tableau', 'Star Schema', 'Drill-Through', 'RLS'],
   },
   {
+    label: 'Statistics & Analytics',
+    color: 'primary',
+    items: ['Descriptive Statistics', 'Probability Distributions', 'Hypothesis Testing', 'A/B Testing', 'Regression Analysis', 'Correlation & Covariance', 'Confidence Intervals', 'Feature Engineering', 'RFM Segmentation', 'Cohort Analysis', 'Pareto Analysis', 'Time Series Analysis'],
+  },
+  {
     label: 'Python & Data Science',
     color: 'primary',
     items: ['Python', 'Pandas', 'NumPy', 'Matplotlib', 'Seaborn', 'Jupyter Notebook'],
@@ -158,7 +176,7 @@ const SKILLS = [
   {
     label: 'Machine Learning',
     color: 'primary',
-    items: ['Scikit-learn', 'XGBoost', 'TensorFlow', 'ARIMA', 'SARIMA', 'Random Forest', 'Regression', 'Classification', 'Clustering', 'A/B Testing', 'Cohort Analysis', 'Hypothesis Testing'],
+    items: ['Scikit-learn', 'XGBoost', 'TensorFlow', 'ARIMA', 'SARIMA', 'Random Forest', 'Regression', 'Classification', 'Clustering'],
   },
   {
     label: 'Data Engineering',
@@ -177,13 +195,29 @@ const EDUCATION = [
     degree: 'Post Graduate Program in Data Science & Analytics',
     institution: 'Imarticus Learning',
     period: 'Aug 2025 – May 2026',
-    detail: 'Ranked 8th (Top 5%) in the Imarticus Data Science Hackathon, Apr 2026 (150+ participants nationwide)',
+    detail: 'Ranked 8th of 150+ participants (Top 5%) — Imarticus Data Science Hackathon, Apr 2026',
+    color: 'primary',
   },
   {
     degree: 'B.Tech in Artificial Intelligence & Machine Learning',
     institution: "KIT's College of Engineering, Kolhapur",
     period: '2021 – 2025',
     detail: 'CGPA: 7.45 / 10',
+    color: 'accent',
+  },
+  {
+    degree: 'Class XII · PCM (Science)',
+    institution: 'Jawahar Navodaya Vidyalaya, Ratnagiri',
+    period: '2019 – 2021',
+    detail: 'CBSE Board · 82% · Secured 2nd Rank at Regional Level in Mathematics Exhibition — Navodaya Vidyalaya Samiti (Class XI)',
+    color: 'primary',
+  },
+  {
+    degree: 'Class X',
+    institution: 'Jawahar Navodaya Vidyalaya, Ratnagiri',
+    period: '2017 – 2019',
+    detail: 'CBSE Board · 80%',
+    color: 'accent',
   },
 ];
 
@@ -332,19 +366,18 @@ function HeroSection({ goto }) {
               initial={{ opacity: 0, y: 28 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-              className="font-display font-bold text-5xl sm:text-6xl lg:text-[68px] leading-[1.05] tracking-tight text-text-primary mb-5"
+              className="font-display font-bold text-5xl sm:text-6xl lg:text-[68px] leading-[1.05] tracking-tight mb-5"
             >
-              <span className="gradient-text">Suhas</span>{' '}
-              Dhamapurkar
+              <span className="gradient-text">Suhas Dhamapurkar</span>
             </motion.h1>
 
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.22 }}
-              className="font-display text-lg sm:text-xl text-text-secondary font-medium mb-3"
+              className="font-display text-lg sm:text-xl text-text-secondary font-medium mb-3 tracking-wide"
             >
-              Data Analyst &nbsp;·&nbsp; AI-Powered Business Intelligence Builder
+              Data Analyst &nbsp;·&nbsp; BI Engineer &nbsp;·&nbsp; Founder of Resilytics
             </motion.p>
 
             <motion.p
@@ -353,11 +386,13 @@ function HeroSection({ goto }) {
               transition={{ duration: 0.5, delay: 0.32 }}
               className="text-base text-text-muted leading-relaxed mb-10 max-w-lg"
             >
-              Turning raw data into board-ready decisions — from ETL pipelines and ML models to production SaaS. Founder of{' '}
+              I transform raw, messy data into decisions executives can act on — through precision SQL, production ML models,
+              and dashboards that replace entire reporting workflows. Currently building{' '}
               <a href="https://resilytics.in" target="_blank" rel="noopener noreferrer"
-                className="text-accent hover:text-accent-dark transition-colors">
+                className="text-accent hover:underline underline-offset-4 transition-colors font-medium">
                 Resilytics
-              </a>.
+              </a>
+              {' '}— a production B2B analytics SaaS — entirely solo.
             </motion.p>
 
             <motion.div
@@ -411,15 +446,6 @@ function HeroSection({ goto }) {
                     className="w-full h-full object-cover object-top"
                   />
                 )}
-              </div>
-              {/* Floating stat chips */}
-              <div className="absolute -bottom-4 -left-8 glass rounded-xl px-4 py-2.5 shadow-xl">
-                <p className="text-xs text-text-muted font-medium">Hackathon Rank</p>
-                <p className="text-sm font-display font-bold text-primary-light">Top 5% · #8 of 150+</p>
-              </div>
-              <div className="absolute -top-2 -right-6 glass rounded-xl px-4 py-2.5 shadow-xl">
-                <p className="text-xs text-text-muted font-medium">Resilytics</p>
-                <p className="text-sm font-display font-bold text-accent">Live in Production</p>
               </div>
             </div>
           </motion.div>
@@ -596,6 +622,11 @@ function ProjectsSection() {
 
 function ProjectCard({ project, delay }) {
   const [hovered, setHovered] = useState(false);
+  const images = project.images || [project.image];
+  const [imgIdx, setImgIdx] = useState(0);
+
+  const prevImg = (e) => { e.stopPropagation(); setImgIdx((i) => (i - 1 + images.length) % images.length); };
+  const nextImg = (e) => { e.stopPropagation(); setImgIdx((i) => (i + 1) % images.length); };
 
   return (
     <motion.article
@@ -604,25 +635,47 @@ function ProjectCard({ project, delay }) {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      <div className="relative h-44 overflow-hidden">
+      <div className="relative h-48 overflow-hidden bg-surface">
         <img
-          src={project.image}
-          alt={project.title}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          src={images[imgIdx]}
+          alt={`${project.title} – screenshot ${imgIdx + 1}`}
+          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-bg/80 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-bg/70 via-transparent to-transparent" />
+
+        {/* Image carousel controls */}
+        {images.length > 1 && (
+          <>
+            <button onClick={prevImg}
+              className="absolute left-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-black/60 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white text-base leading-none hover:bg-black/80 transition-colors z-10">
+              ‹
+            </button>
+            <button onClick={nextImg}
+              className="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-black/60 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white text-base leading-none hover:bg-black/80 transition-colors z-10">
+              ›
+            </button>
+            <div className="absolute bottom-2.5 left-0 right-0 flex justify-center gap-1.5 z-10">
+              {images.map((_, i) => (
+                <button key={i} onClick={(e) => { e.stopPropagation(); setImgIdx(i); }}
+                  className={`rounded-full transition-all ${i === imgIdx ? 'w-4 h-1.5 bg-white' : 'w-1.5 h-1.5 bg-white/35 hover:bg-white/60'}`} />
+              ))}
+            </div>
+          </>
+        )}
+
+        {/* Hover overlay — dark glass instead of solid purple */}
         <AnimatePresence>
           {hovered && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.25 }}
-              className="absolute inset-0 bg-primary/85 flex items-center justify-center p-6 text-center"
+              transition={{ duration: 0.22 }}
+              className="absolute inset-0 bg-[#0a0a0f]/82 backdrop-blur-sm flex items-end p-5"
             >
-              <div className="text-white">
-                <p className="text-xs uppercase tracking-widest mb-2 opacity-70">Key Outcome</p>
-                <p className="font-semibold text-sm leading-snug">{project.outcome}</p>
+              <div>
+                <p className="text-[10px] uppercase tracking-[0.15em] text-text-muted mb-1.5 font-semibold">Key Outcome</p>
+                <p className="text-sm text-text-primary leading-snug font-medium">{project.outcome}</p>
               </div>
             </motion.div>
           )}
@@ -726,11 +779,11 @@ function EducationSection() {
           {/* Vertical line */}
           <div className="absolute left-5 top-2 bottom-2 w-px bg-gradient-to-b from-primary via-primary/40 to-transparent" />
 
-          <div className="space-y-10">
+          <div className="space-y-8">
             {EDUCATION.map((edu, i) => (
-              <motion.div key={i} {...fadeUp(i * 0.1)} className="flex gap-6">
+              <motion.div key={i} {...fadeUp(i * 0.08)} className="flex gap-6">
                 <div className="flex-shrink-0 w-10 flex justify-center">
-                  <div className={`mt-1 ${i === 0 ? 'timeline-dot' : 'timeline-dot-accent'}`} />
+                  <div className={`mt-1.5 ${edu.color === 'primary' ? 'timeline-dot' : 'timeline-dot-accent'}`} />
                 </div>
                 <div className="glass rounded-2xl p-6 flex-1">
                   <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-2">
@@ -741,10 +794,10 @@ function EducationSection() {
                       {edu.period}
                     </span>
                   </div>
-                  <p className={`text-sm font-semibold mb-2 ${i === 0 ? 'text-primary-light' : 'text-accent'}`}>
+                  <p className={`text-sm font-semibold mb-2 ${edu.color === 'primary' ? 'text-primary-light' : 'text-accent'}`}>
                     {edu.institution}
                   </p>
-                  <p className="text-sm text-text-secondary">{edu.detail}</p>
+                  <p className="text-sm text-text-secondary leading-relaxed">{edu.detail}</p>
                 </div>
               </motion.div>
             ))}
@@ -759,19 +812,16 @@ function EducationSection() {
 function AboutSection() {
   const strengths = [
     {
-      icon: '🚀',
-      title: 'I ship production work, not just notebooks',
-      body: "Resilytics is live at resilytics.in with real tenants, real SQL migrations, and automated release checks — not a demo repo.",
+      label: 'Production-grade output',
+      body: 'Resilytics is live at resilytics.in — real tenants, real SQL migrations, automated release checks. Not a Jupyter demo; a deployed system.',
     },
     {
-      icon: '🎯',
-      title: 'I close the gap between data and decisions',
-      body: 'Every project ends with a business recommendation, not just a chart. At Labmentix, churn drivers were adopted by the retention team. At Resilytics, reports go straight to a CFO.',
+      label: 'Data to decision, not data to chart',
+      body: 'Every deliverable closes with a ranked recommendation. At Labmentix, churn drivers were handed off to the retention team and acted on the next sprint.',
     },
     {
-      icon: '📊',
-      title: 'I rank in the top 5% competitively',
-      body: '8th of 150+ participants at the Imarticus Data Science Hackathon (Apr 2026) — applying the same pressure-tested analytical approach I bring to every engagement.',
+      label: 'Competitive-grade analytical depth',
+      body: 'Ranked 8th of 150+ analysts nationwide at the Imarticus Data Science Hackathon (Apr 2026, Top 5%) — the same rigour I bring to every client engagement.',
     },
   ];
 
@@ -780,62 +830,43 @@ function AboutSection() {
       <div className="max-w-6xl mx-auto px-6">
         <motion.p {...fadeUp()} className="section-label">About Me</motion.p>
         <motion.h2 {...fadeUp(0.05)} className="font-display font-bold text-3xl sm:text-4xl text-text-primary mb-10">
-          Builder with a data obsession
+          From data foundations to production systems
         </motion.h2>
 
-        <div className="grid lg:grid-cols-2 gap-12 mb-14">
-          <motion.div {...fadeUp(0.1)} className="space-y-5 text-text-secondary leading-relaxed">
-            <p>
-              I'm a data analyst with a B.Tech in AI & ML who went from building ETL pipelines at a telecom startup
-              to designing <a href="https://resilytics.in" target="_blank" rel="noopener noreferrer"
-                className="text-accent hover:underline underline-offset-4">Resilytics</a> — a production multi-tenant
-              SaaS platform — entirely solo.
-            </p>
-            <p>
-              My path: Built foundations in AI & ML at KIT's College of Engineering (2021–2025), then put theory
-              into practice as a Data Analyst Intern at Labmentix, where I shipped an XGBoost churn model and Power BI
-              dashboards that replaced four manual weekly reports. While completing my PG Program at Imarticus Learning,
-              I designed and deployed every layer of Resilytics myself: data ingestion, DuckDB analytics warehouse,
-              Monte Carlo simulation engine, and a React/FastAPI production app with tenant isolation.
-            </p>
-            <p>
-              I think in pipelines and outcomes — not just charts. Whether it's SQL or Altman Z-Scores, the end goal
-              is always the same: a decision someone can act on.
-            </p>
-          </motion.div>
-
-          <motion.div {...fadeUp(0.15)}>
-            <div className="glass rounded-2xl p-6 sm:p-8">
-              <h3 className="font-display font-semibold text-sm text-primary-light uppercase tracking-widest mb-5">
-                At a glance
-              </h3>
-              <dl className="space-y-4 text-sm">
-                {[
-                  ['Location', 'Pune, Maharashtra, India'],
-                  ['Open to', 'Full-time / Contract data analyst roles'],
-                  ['Stack', 'SQL · Python · Power BI · FastAPI · PostgreSQL'],
-                  ['LinkedIn', <a key="li" href="https://linkedin.com/in/suhas-1710d" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">linkedin.com/in/suhas-1710d</a>],
-                  ['GitHub', <a key="gh" href="https://github.com/Suhas5497" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">github.com/Suhas5497</a>],
-                ].map(([label, value]) => (
-                  <div key={label} className="flex gap-4">
-                    <dt className="w-24 flex-shrink-0 text-text-muted font-medium">{label}</dt>
-                    <dd className="text-text-secondary">{value}</dd>
-                  </div>
-                ))}
-              </dl>
-            </div>
-          </motion.div>
-        </div>
+        <motion.div {...fadeUp(0.1)} className="max-w-3xl space-y-5 text-text-secondary leading-relaxed text-[15px] mb-14">
+          <p>
+            My analytical instincts were forged early — a CBSE scholar at Jawahar Navodaya Vidyalaya, Ratnagiri,
+            where I secured <span className="text-text-primary font-medium">2nd rank at Regional level</span> in
+            the Navodaya Vidyalaya Samiti Mathematics Exhibition. That same precision carried through a B.Tech in
+            AI & ML and into industry.
+          </p>
+          <p>
+            At <span className="text-text-primary font-medium">Labmentix</span>, I compressed weekly ETL cycles
+            by 35%, productionized an XGBoost model that surfaced the top three churn drivers for the retention
+            team, and replaced four manual Power BI reports that were consuming six analyst-hours per week.
+          </p>
+          <p>
+            While completing my PG Program at Imarticus Learning, I designed and shipped every layer of{' '}
+            <a href="https://resilytics.in" target="_blank" rel="noopener noreferrer"
+              className="text-accent hover:underline underline-offset-4 font-medium">Resilytics</a>{' '}
+            solo — data ingestion, DuckDB analytics warehouse, Monte Carlo simulation engine, and a React/FastAPI
+            production app with full tenant isolation. Raw upload to board-ready PDF executive report.
+          </p>
+          <p className="text-text-primary font-medium italic">
+            I think in pipelines and outcomes. Whether it's SQL or Altman Z-Scores, the end goal is always
+            the same: a decision someone can act on.
+          </p>
+        </motion.div>
 
         {/* Why hire me */}
-        <motion.h3 {...fadeUp(0.2)} className="font-display font-bold text-xl text-text-primary mb-6">
-          Why hire me
+        <motion.h3 {...fadeUp(0.15)} className="font-display font-bold text-xl text-text-primary mb-6">
+          Why work with me
         </motion.h3>
         <div className="grid sm:grid-cols-3 gap-5">
           {strengths.map((s, i) => (
-            <motion.div key={i} {...fadeUp(0.2 + i * 0.08)} className="glass rounded-2xl p-6">
-              <span className="text-2xl mb-4 block">{s.icon}</span>
-              <h4 className="font-display font-semibold text-sm text-text-primary mb-2 leading-snug">{s.title}</h4>
+            <motion.div key={i} {...fadeUp(0.15 + i * 0.08)} className="glass rounded-2xl p-6">
+              <div className="w-8 h-0.5 bg-primary mb-5 rounded-full" />
+              <h4 className="font-display font-semibold text-sm text-primary-light mb-3 leading-snug">{s.label}</h4>
               <p className="text-sm text-text-secondary leading-relaxed">{s.body}</p>
             </motion.div>
           ))}

@@ -1,40 +1,30 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
-  content: [
-    "./pages/**/*.{js,jsx}",
-    "./components/**/*.{js,jsx}",
-    "./app/**/*.{js,jsx}",
-  ],
+export default {
+  content: ['./index.html', './src/**/*.{ts,tsx}'],
   theme: {
     extend: {
       fontFamily: {
-        display: ["Sora", "system-ui", "sans-serif"],
-        sans: ["Inter", "system-ui", "sans-serif"],
+        display: ['Sora', 'system-ui', 'sans-serif'],
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+        mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
+        script: ['Caveat', 'cursive'],
       },
       colors: {
-        primary: "rgb(var(--c-primary) / <alpha-value>)",
-        "primary-dark": "rgb(var(--c-primary-dark) / <alpha-value>)",
-        "primary-light": "rgb(var(--c-primary-light) / <alpha-value>)",
-        accent: "rgb(var(--c-accent) / <alpha-value>)",
-        "accent-dark": "rgb(var(--c-accent-dark) / <alpha-value>)",
-        bg: "#0a0a0f",
-        surface: "#0f0f1a",
-        "surface-2": "#131320",
-        "border-dim": "#1e1e30",
-        "text-primary": "#f1f5f9",
-        "text-secondary": "#94a3b8",
-        "text-muted": "#64748b",
-      },
-      animation: {
-        "pulse-slow": "pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",
-        "float": "float 6s ease-in-out infinite",
-      },
-      keyframes: {
-        float: {
-          "0%, 100%": { transform: "translateY(0px)" },
-          "50%": { transform: "translateY(-8px)" },
+        // Role-driven tokens: set per experience via [data-theme] in index.css
+        primary: 'rgb(var(--c-primary) / <alpha-value>)',
+        'primary-light': 'rgb(var(--c-primary-light) / <alpha-value>)',
+        accent: 'rgb(var(--c-accent) / <alpha-value>)',
+        tertiary: 'rgb(var(--c-tertiary) / <alpha-value>)',
+        bg: '#07070c',
+        surface: '#0e0e18',
+        'surface-2': '#141422',
+        ink: {
+          DEFAULT: '#f1f5f9',
+          2: '#a3b0c2',
+          3: '#6b7a90',
         },
       },
+      maxWidth: { page: '1240px' },
     },
   },
   plugins: [],

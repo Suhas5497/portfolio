@@ -1,220 +1,112 @@
-# Suhas Dhamapurkar - Data Analyst Portfolio
+# Suhas Dhamapurkar — Portfolio
 
-A professional, interactive portfolio website showcasing data analytics projects, machine learning models, and business intelligence work.
+An interactive portfolio with three experiences: **Data Analyst**, **AI/ML Engineer** and **Hybrid Data + AI**.
+A cinematic landing page with a 3D portrait lets visitors choose a path; each path has its own theme, live
+3D scene, interactive demo, projects, experience, education, résumé and contact.
 
-## 🚀 Live Demo
+**Stack:** React 18 · Vite · TypeScript · Tailwind CSS · React Three Fiber · Three.js · Drei · GSAP + ScrollTrigger · React Router
 
-Visit the portfolio at: [Your deployed URL]
+## Routes
 
-## ✨ Features
+| Path | Page |
+| --- | --- |
+| `/` | Landing — portrait, three portfolio cards, 2-second dwell previews |
+| `/data-analyst` | Data Analyst portfolio (blue/cyan, data globe, findings explorer) |
+| `/ai-ml-engineer` | AI/ML Engineer portfolio (violet/indigo, neural network, live training demo) |
+| `/hybrid` | Hybrid Data + AI portfolio (cyan/violet/emerald, intelligence core, pipeline graph, risk simulator) |
+| `/<role>/projects/:id` | Project case study (problem, dataset, architecture, methodology, tools, results, evaluation, limitations, business implications) |
+| `/privacy`, `/terms`, `/disclaimer` | Legal pages |
+| `*` | 404 |
 
-- **Clean, Professional Design**: Light theme with emerald/teal accent colors
-- **Interactive Charts**: Real-time visualizations using Recharts
-- **Project Showcase**: 4 featured analytics projects with images and demo links
-- **Streamlit Integration**: Embedded demos with modal preview and direct launch options
-- **Responsive Layout**: Optimized for desktop, tablet, and mobile
-- **Smooth Animations**: Powered by Framer Motion
-- **Resume Download**: Direct PDF download functionality
+## Getting started
 
-## 📁 Project Structure
+Requires Node.js 18+.
 
-```
-├── public/
-│   ├── assets/
-│   │   ├── churn-model.png              # Customer Churn project image
-│   │   ├── stock-forecast-chart.png     # Stock Forecasting project image
-│   │   ├── retail-sales-dashboard.png   # Retail Sales project image
-│   │   └── resilytics-dashboard.png     # Amazon Prime project image
-│   └── resume.pdf                        # Your resume PDF
-├── src/
-│   ├── data/
-│   │   ├── revenue_forecast.json        # Revenue chart data
-│   │   ├── churn_drivers.json           # Churn drivers chart data
-│   │   └── skills_radar.json            # Skills radar chart data
-│   ├── App.jsx                           # Main React component
-│   ├── styles.css                        # Global styles
-│   └── main.jsx                          # Entry point
-├── index.html
-├── package.json
-├── tailwind.config.cjs
-├── postcss.config.cjs
-└── vite.config.mts
-```
-
-## 🛠️ Tech Stack
-
-- **Framework**: React 18
-- **Build Tool**: Vite
-- **Styling**: Tailwind CSS
-- **Charts**: Recharts
-- **Animations**: Framer Motion
-- **Icons**: Custom SVG icons
-
-## 🏃‍♂️ Running Locally
-
-### Prerequisites
-
-- Node.js 18+ installed
-- npm or yarn package manager
-
-### Installation
-
-1. Clone the repository:
-```bash
-git clone https://github.com/Suhas5497/portfolio.git
-cd portfolio
-```
-
-2. Install dependencies:
 ```bash
 npm install
-# or
-yarn install
+npm run dev        # http://localhost:5173
+npm run build      # type-check + production build into dist/
+npm run preview    # serve the production build locally
+npm run typecheck  # TypeScript only
 ```
 
-3. Start the development server:
-```bash
-npm run dev
-# or
-yarn dev
+### Environment variables
+
+Copy `.env.example` to `.env.local` if you need overrides. Every `VITE_*` value is bundled into the
+public site — **never put secrets in them**.
+
+| Variable | Purpose |
+| --- | --- |
+| `VITE_SITE_URL` | Canonical URL for canonical/OG tags (e.g. `https://suhas.vercel.app`). |
+| `VITE_CONTACT_FORM_ENDPOINT` | Optional form endpoint (e.g. Formspree). Empty → the contact form opens the visitor's email app. |
+
+## Editing content
+
+All content lives in typed data files — no component changes needed.
+
+| File | What it holds |
+| --- | --- |
+| `src/config/profile.ts` | Name, links, portrait, experience, education, achievements |
+| `src/config/roles.ts` | Per-experience headline, theme palette, skills, project order, about text |
+| `src/data/projects.ts` | Every project and its case-study content |
+
+### Honesty rules for projects
+
+Each project has a `status`:
+
+- **`completed`** — results come only from the résumé / existing published work. Shown with a green *Completed* badge.
+- **`proposed`** — planned scope only. `results` must stay empty; the page labels every section as *planned*
+  and says no results are claimed.
+- **`placeholder`** — reserved slot (currently the **SPA project**). Fill in the `spa-project` entry when details are confirmed.
+
+To publish a proposed project, change its `status` to `completed` and fill `results`, `evaluation` and `links`
+with real, verifiable information. Interactive demos (recommender, model training, risk simulator,
+Ask Resilytics) run on clearly labelled synthetic or sample data.
+
+### Portrait
+
+- `public/assets/portrait-hero-*.webp` — background-removed, stylised cut-out used on the landing page (rendered as a 3D plane).
+- `public/assets/portrait-480.*` — small portrait used on inner pages.
+
+To use a new photo, replace these files keeping the same names and aspect ratios (or update `PROFILE.portrait` / `PROFILE.hero`).
+
+## Project structure
+
+```
+src/
+  App.tsx                 routes, lazy-loaded pages, scroll handling
+  config/                 profile + per-role configuration
+  data/projects.ts        project registry
+  pages/                  Landing, RolePage, ProjectPage, LegalPage, NotFound
+  components/
+    layout/               header, footer
+    sections/             About, Skills, Projects, Experience, Education, Résumé CTA, Contact
+    demos/                interactive demos (each labelled with its data source)
+    three/                React Three Fiber scenes (procedural — no external models/textures)
+    ui/                   portrait, badges, icons, loader
+  hooks/                  reduced motion, page metadata, GSAP scroll reveals
+  lib/                    WebGL detection, seeded RNG
 ```
 
-4. Open [http://localhost:5173](http://localhost:5173) in your browser
+## Accessibility & performance
 
-## 📦 Building for Production
+- Keyboard: cards are links (Tab / Arrow keys / Home / End, Enter to open); skip links on every page.
+- Touch: first tap previews a card, second tap opens it.
+- `prefers-reduced-motion`: springs/animations are disabled; 3D scenes render a still frame.
+- No WebGL or a 3D crash → static gradient fallbacks; the landing portrait falls back to a normal image.
+- Three.js is code-split and lazy-loaded; 3D rendering pauses when off-screen; DPR is capped.
+- Images are WebP and lazy-loaded below the fold. No audio; the product video loads only on click.
 
-```bash
-npm run build
-# or
-yarn build
-```
+## Deploying to Vercel
 
-The built files will be in the `dist/` directory.
+The repo includes `vercel.json` (Vite framework preset, `dist/` output, SPA rewrites, security headers).
 
-## 🚀 Deploying to GitHub Pages
+1. Import the repository in Vercel (or push to the connected repo).
+2. **Project Settings → Build & Development:** Framework *Vite*, build `npm run build`, output `dist`
+   (`vercel.json` sets these; if the project was previously configured for Next.js, make sure no old override remains).
+3. Optionally add `VITE_SITE_URL` / `VITE_CONTACT_FORM_ENDPOINT` under *Environment Variables*.
+4. Deploy. Deep links such as `/hybrid/projects/resilytics` work thanks to the SPA rewrite.
 
-### Method 1: Manual Deployment
+## License
 
-1. Build the project:
-```bash
-npm run build
-```
-
-2. Deploy the `dist` folder to GitHub Pages using:
-```bash
-npx gh-pages -d dist
-```
-
-### Method 2: GitHub Actions (Recommended)
-
-1. Create `.github/workflows/deploy.yml`:
-```yaml
-name: Deploy to GitHub Pages
-
-on:
-  push:
-    branches: [main]
-
-jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-          
-      - name: Install dependencies
-        run: npm ci
-        
-      - name: Build
-        run: npm run build
-        
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
-```
-
-2. In your repository settings, set GitHub Pages source to the `gh-pages` branch.
-
-### Configuration for GitHub Pages
-
-Update `vite.config.mts` with your repository name:
-```javascript
-export default defineConfig({
-  base: '/your-repo-name/',
-  // ... other config
-});
-```
-
-## 🖼️ Adding Project Images
-
-1. Place your project images in `/public/assets/`
-2. Recommended dimensions: 800x400px or similar aspect ratio
-3. Supported formats: PNG, JPG, WebP
-
-## 📄 Updating Resume
-
-1. Replace `/public/resume.pdf` with your updated resume
-2. Keep the filename as `resume.pdf` or update the link in `App.jsx`
-
-## 🔗 Configuring Streamlit Demo URLs
-
-Edit the `DEMO_URLS` object in `/src/App.jsx`:
-
-```javascript
-const DEMO_URLS = {
-  churn: "https://your-churn-demo.streamlit.app",
-  retail: "https://your-retail-demo.streamlit.app",
-};
-```
-
-Leave the URL empty string `""` to show "Demo Coming Soon" button.
-
-## 🎨 Customization
-
-### Changing Colors
-
-Edit the color palette in `tailwind.config.cjs`:
-```javascript
-colors: {
-  primary: {
-    500: "#10b981", // Main accent color
-    // ... other shades
-  }
-}
-```
-
-### Updating Personal Information
-
-Edit contact details in the `Contact` component in `/src/App.jsx`:
-- Email address
-- LinkedIn profile
-- GitHub profile
-
-### Modifying Projects
-
-Update the project cards in the `Projects` component:
-- Title and description
-- Technology tags
-- Problem/Approach/Insights
-- GitHub and demo links
-- Project images
-
-## 📧 Contact
-
-- **Email**: suhasdhamapurkar1710@gmail.com
-- **LinkedIn**: [linkedin.com/in/suhas-1710d](https://linkedin.com/in/suhas-1710d)
-- **GitHub**: [github.com/Suhas5497](https://github.com/Suhas5497)
-
-## 📝 License
-
-This project is open source and available under the [MIT License](LICENSE).
-
----
-
-Built with ❤️ by Suhas Dhamapurkar
+Code: MIT (see `LICENSE`). Personal content, portrait and project write-ups © Suhas Dhamapurkar. All rights reserved.

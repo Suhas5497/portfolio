@@ -144,8 +144,7 @@ venv.bak/
 # Rope project settings
 .ropeproject
 
-# mkdocs documentation
-/site
+# mkdocs documentation (site/ is now the published portfolio, so it is not ignored)
 
 # mypy
 .mypy_cache/
@@ -191,3 +190,13 @@ cython_debug/
 # Environment files
 *.env
 *.env.*
+
+# Next.js
+.next/
+node_modules/
+
+# Vite
+dist/
+.env.local
+.env*.local
+!.env.example

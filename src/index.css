@@ -1,0 +1,158 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Theme tokens (RGB channels so Tailwind alpha modifiers work) ─────────── */
+:root,
+[data-theme='neutral'] {
+  --c-primary: 139 92 246;
+  --c-primary-light: 196 181 253;
+  --c-accent: 34 211 238;
+  --c-tertiary: 16 185 129;
+}
+[data-theme='data'] {
+  --c-primary: 59 130 246;
+  --c-primary-light: 125 211 252;
+  --c-accent: 34 211 238;
+  --c-tertiary: 56 189 248;
+}
+[data-theme='ai'] {
+  --c-primary: 139 92 246;
+  --c-primary-light: 196 181 253;
+  --c-accent: 99 102 241;
+  --c-tertiary: 192 132 252;
+}
+[data-theme='hybrid'] {
+  --c-primary: 34 211 238;
+  --c-primary-light: 165 243 252;
+  --c-accent: 139 92 246;
+  --c-tertiary: 16 185 129;
+}
+
+@layer base {
+  html {
+    background: #07070c;
+    color: #f1f5f9;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    @apply font-sans bg-bg text-ink min-h-screen;
+  }
+  ::selection {
+    background: rgb(var(--c-primary) / 0.35);
+  }
+  :focus-visible {
+    outline: 2px solid rgb(var(--c-primary-light));
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+  h1, h2, h3, h4 {
+    @apply font-display tracking-tight;
+  }
+}
+
+@layer components {
+  .page-x {
+    @apply mx-auto w-full max-w-page px-4 sm:px-6 lg:px-8;
+  }
+  .glass {
+    background: rgb(255 255 255 / 0.035);
+    border: 1px solid rgb(255 255 255 / 0.08);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+  .card-hover {
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+  }
+  .card-hover:hover {
+    border-color: rgb(var(--c-primary) / 0.45);
+    box-shadow: 0 0 40px rgb(var(--c-primary) / 0.1), 0 20px 50px rgb(0 0 0 / 0.35);
+  }
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition-all duration-200;
+  }
+  .btn-primary {
+    @apply btn text-bg;
+    background: rgb(var(--c-primary-light));
+    box-shadow: 0 0 24px rgb(var(--c-primary) / 0.35);
+  }
+  .btn-primary:hover {
+    box-shadow: 0 0 36px rgb(var(--c-primary) / 0.55);
+    transform: translateY(-1px);
+  }
+  .btn-ghost {
+    @apply btn text-ink;
+    border: 1px solid rgb(255 255 255 / 0.16);
+  }
+  .btn-ghost:hover {
+    border-color: rgb(var(--c-primary-light) / 0.6);
+    color: rgb(var(--c-primary-light));
+  }
+  .eyebrow {
+    @apply inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em];
+    color: rgb(var(--c-primary-light));
+  }
+  .eyebrow::before {
+    content: '';
+    width: 22px;
+    height: 1px;
+    background: currentColor;
+  }
+  .gradient-text {
+    background: linear-gradient(110deg, rgb(var(--c-primary-light)) 0%, rgb(var(--c-accent)) 55%, rgb(var(--c-tertiary)) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .pill {
+    @apply inline-flex items-center rounded-full px-3 py-1 text-xs text-ink-2;
+    border: 1px solid rgb(255 255 255 / 0.1);
+    background: rgb(255 255 255 / 0.03);
+  }
+  .prose-p p + p {
+    margin-top: 1rem;
+  }
+}
+
+/* Ambient page background, tinted by the active theme */
+.theme-bg {
+  background-image:
+    radial-gradient(ellipse 70% 45% at 50% -5%, rgb(var(--c-primary) / 0.16), transparent 70%),
+    radial-gradient(ellipse 45% 35% at 90% 85%, rgb(var(--c-accent) / 0.08), transparent 70%),
+    radial-gradient(ellipse 40% 30% at 5% 70%, rgb(var(--c-tertiary) / 0.06), transparent 70%);
+  transition: background-image 0.6s ease;
+}
+
+.grid-overlay {
+  background-image:
+    linear-gradient(rgb(255 255 255 / 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(255 255 255 / 0.025) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@keyframes insight {
+  from { opacity: 0; transform: translateY(8px) scale(0.98); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+@keyframes neon {
+  0%, 100% { opacity: 1; }
+  45% { opacity: 0.85; }
+  48% { opacity: 0.55; }
+  50% { opacity: 0.95; }
+}

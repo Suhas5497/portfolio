@@ -1,0 +1,651 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Suhas Dhamapurkar — Data Analyst, AI/ML Engineer. Portfolio, projects and freelance work.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<title>Suhas Dhamapurkar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,300;1,9..144,400&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Layout: three-column hero (story · portrait · focus list) over a curved option wheel; stacks on phones. */
+:root{
+  color-scheme:dark;
+  --slate-0:#141a17;      /* deepest backdrop */
+  --slate-1:#1d2421;      /* backdrop */
+  --slate-2:#2c3631;      /* lit backdrop */
+  --card:#1a201dee;       /* wheel cards */
+  --line:#c9d8b633;       /* hairlines */
+  --sage:#c9d8b6;         /* accent */
+  --sage-deep:#9fb48d;    /* accent, pressed */
+  --cream:#eef0ea;        /* primary text */
+  --mist:#a7b0a8;         /* secondary text */
+  --ink:#1a201d;          /* text on sage */
+  --display:"Fraunces",Georgia,"Times New Roman",serif;
+  --body:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --ease:cubic-bezier(.2,.8,.2,1);
+}
+*{box-sizing:border-box}
+html{background:var(--slate-1)}
+body{margin:0;background:var(--slate-1);color:var(--cream);font:400 15px/1.55 var(--body);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--sage);outline-offset:3px;border-radius:6px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* ── Backdrop: slate with drifting window-light and linen grain ── */
+.backdrop{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(ellipse 70% 80% at 28% 12%,var(--slate-2) 0%,var(--slate-1) 52%,var(--slate-0) 100%)}
+.backdrop::before{content:"";position:absolute;width:70vmax;height:70vmax;left:-12vmax;top:-30vmax;border-radius:50%;
+  background:radial-gradient(closest-side,#dfe9d214,transparent);animation:drift 28s ease-in-out infinite alternate}
+.backdrop::after{content:"";position:absolute;inset:0;opacity:.07;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+@keyframes drift{to{transform:translate(18vmax,10vmax)}}
+
+.page{position:relative;z-index:1;max-width:1360px;margin:0 auto;padding-inline:clamp(16px,5vw,72px);padding-block:0 28px}
+
+/* ── Header ── */
+header{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:16px;padding-block:22px}
+.tools{justify-self:end}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:600;font-size:15px;white-space:nowrap}
+.brand b{display:grid;place-items:center;width:34px;height:34px;border:1px solid var(--sage);border-radius:9px;color:var(--sage);font:400 italic 17px var(--display)}
+nav.main{display:flex;gap:28px;font-size:14px}
+nav.main .mob{display:none}
+nav.main a{position:relative;text-decoration:none;color:var(--mist);padding-bottom:6px;transition:color .3s}
+nav.main a::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--sage);transform:scaleX(0);transform-origin:left;transition:transform .45s var(--ease)}
+nav.main a:hover,nav.main a[aria-current]{color:var(--cream)}
+nav.main a:hover::after,nav.main a[aria-current]::after{transform:scaleX(1)}
+.tools{display:flex;align-items:center;gap:6px}
+.resume{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--sage);color:var(--sage);border-radius:999px;padding:8px 16px;font-size:12.5px;font-weight:600;text-decoration:none;white-space:nowrap;transition:background .3s,color .3s}
+.resume:hover{background:var(--sage);color:var(--ink)}
+.icon-btn{display:grid;place-items:center;width:36px;height:36px;border-radius:50%;color:var(--mist);background:none;border:0;cursor:pointer;text-decoration:none;transition:color .2s,background .2s}
+.icon-btn:hover{color:var(--cream);background:#ffffff0d}
+.icon-btn svg{width:19px;height:19px}
+.menu-btn{display:none}
+
+/* ── Hero ── */
+.hero{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:24px}
+.story{min-width:0;padding-top:24px}
+.hello{font:500 12px var(--mono);letter-spacing:.42em;text-transform:uppercase;color:var(--mist)}
+h1{margin:14px 0 0;font:300 italic clamp(52px,6.4vw,86px)/.92 var(--display);font-variation-settings:"opsz" 144;letter-spacing:-.02em;color:var(--sage);text-wrap:balance}
+h1 span{display:block}
+.tagline{margin:22px 0 0;font:400 italic clamp(21px,2vw,26px)/1.25 var(--display);color:var(--cream)}
+.turn{margin:14px 0 0;font-size:16px;color:var(--cream)}
+.flip{display:inline-block;position:relative;height:1.5em;vertical-align:bottom;overflow:hidden;border-bottom:1px dashed var(--sage);padding:0 3px;margin:0 2px}
+.flip span{display:block;color:var(--sage);font-weight:600;transition:transform .6s var(--ease)}
+.cta{display:inline-flex;align-items:center;gap:10px;margin-top:30px;padding:14px 26px;border:0;border-radius:999px;background:var(--sage);color:var(--ink);font:600 14px var(--body);cursor:pointer;text-decoration:none;transition:transform .3s var(--ease),background .3s}
+.cta:hover{transform:translateY(-2px)}
+.cta svg{width:16px;height:16px;transition:transform .3s var(--ease)}
+.cta:hover svg{transform:translateX(3px)}
+
+.portrait{position:relative;justify-self:center;height:clamp(440px,64vh,640px);aspect-ratio:1024/1536;max-width:100%}
+.portrait::before{content:"";position:absolute;left:-8%;right:-8%;top:2%;height:72%;border-radius:50%;
+  background:radial-gradient(closest-side,#c9d8b624,transparent);z-index:-1}
+.portrait img{display:block;width:100%;height:100%;object-fit:contain;object-position:bottom}
+
+.focus{min-width:0;justify-self:end;padding-top:24px}
+.focus h2{margin:0 0 18px;font:500 10.5px var(--mono);letter-spacing:.28em;text-transform:uppercase;color:var(--mist)}
+.focus ul{list-style:none;margin:0;padding:0;display:grid;gap:18px}
+.focus li{display:flex;align-items:center;gap:13px;font-size:15px}
+.focus svg{width:20px;height:20px;flex:none;color:var(--sage)}
+
+/* ── Option wheel ── */
+.wheel-wrap{position:relative;margin-top:-95px;z-index:3;overflow-x:clip;padding-top:8px;margin-inline:calc(-1 * clamp(16px,5vw,72px));padding-inline:clamp(16px,5vw,72px)}
+.wheel{position:relative;height:275px;outline:none}
+.arc{position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none;z-index:0}
+.arc polyline{fill:none;stroke:var(--sage);stroke-width:1.2;stroke-opacity:.55;stroke-linecap:round}
+.arc polyline.glow{stroke-width:7;stroke-opacity:.12;filter:blur(4px)}
+.opt{position:absolute;left:50%;top:0;width:var(--cw,280px);margin-left:calc(var(--cw,280px) / -2);
+  display:flex;flex-direction:column;gap:14px;padding:18px 18px 16px;text-align:left;cursor:pointer;
+  background:var(--card);color:var(--cream);border:1px solid var(--line);border-radius:16px;
+  box-shadow:0 22px 48px #00000066;transform-origin:50% 50%;will-change:transform,opacity;
+  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);transition:border-color .4s,box-shadow .4s;font:inherit}
+.opt[data-center="true"]{border-color:var(--sage);box-shadow:0 0 0 1px var(--sage),0 30px 64px #00000080}
+.opt .top{display:flex;align-items:center;justify-content:space-between}
+.opt .art{width:44px;height:44px;color:var(--sage);opacity:.9}
+.opt .row{display:flex;align-items:center;gap:13px}
+.opt .ic{display:grid;place-items:center;width:42px;height:42px;flex:none;border:1px solid var(--sage);border-radius:11px;color:var(--sage);transition:background .4s,color .4s}
+.opt[data-center="true"] .ic{background:var(--sage);color:var(--ink)}
+.opt .ic svg{width:20px;height:20px}
+.opt h3{margin:0;font:600 21px/1.15 var(--display)}
+.opt p{margin:4px 0 0;font-size:12px;line-height:1.4;color:var(--mist)}
+.opt .go{margin-left:auto;display:grid;place-items:center;width:34px;height:34px;flex:none;border-radius:50%;border:1px solid #eef0ea55;transition:background .3s,color .3s,transform .3s var(--ease)}
+.opt[data-center="true"] .go{background:var(--sage);color:var(--ink);border-color:var(--sage)}
+.opt[data-center="true"]:hover .go{transform:translateX(3px)}
+.opt .go svg{width:15px;height:15px}
+.hint{margin:8px 0 0;text-align:center;font:400 11px var(--mono);letter-spacing:.06em;color:var(--mist)}
+
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:15;margin-inline:calc(-1 * clamp(16px,5vw,72px));padding-inline:clamp(16px,5vw,72px);transition:background .3s,border-color .3s;border-bottom:1px solid transparent}
+header.scrolled{background:#1a201dd9;box-shadow:0 0 0 100vmax #1a201dd9;clip-path:inset(0 -100vmax -1px);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom-color:#ffffff10}
+html{scroll-padding-top:0}
+
+/* ── Education: milestone arc (scroll-linked, pinned) ── */
+.edu{position:relative;height:calc(100vh + 3 * 65vh);margin-top:56px}
+.edu-pin{position:sticky;top:0;height:100vh;min-height:620px;display:flex;flex-direction:column;align-items:center;padding-top:96px}
+.edu .eyebrow{font:500 11px var(--mono);letter-spacing:.3em;text-transform:uppercase;color:var(--sage)}
+.edu h2{margin:0;font:300 italic clamp(38px,5vw,60px)/1.02 var(--display);font-variation-settings:"opsz" 144;color:var(--sage);letter-spacing:-.015em;text-align:center;text-wrap:balance}
+.edu-arc{position:relative;width:100%;height:230px;margin-top:22px;outline:none}
+.edu-arc svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+.edu-arc polyline{fill:none;stroke:var(--sage);stroke-width:1.3;stroke-opacity:.5;stroke-linecap:round}
+.edu-arc polyline.glow{stroke-width:7;stroke-opacity:.1;filter:blur(4px)}
+.edu-arc polyline.lit{stroke-width:2.2;stroke-opacity:1;filter:drop-shadow(0 0 6px #c9d8b6aa)}
+.ms{position:absolute;left:50%;top:0;width:150px;margin-left:-75px;display:flex;flex-direction:column;align-items:center;gap:6px;background:none;border:0;color:var(--mist);cursor:pointer;font:inherit;transform-origin:50% 8px;will-change:transform,opacity;padding:0}
+.ms .d{width:16px;height:16px;border-radius:50%;border:2px solid var(--sage);background:var(--slate-1);transition:background .3s,box-shadow .3s}
+.ms b{font:300 italic 34px/1 var(--display);transition:color .3s,font-size .3s}
+.ms small{font:500 10.5px var(--mono);letter-spacing:.04em;text-align:center}
+.ms[data-on="true"] .d{background:var(--sage);box-shadow:0 0 0 8px #c9d8b622}
+.ms[data-on="true"] b{color:var(--sage);font-size:44px}
+.ms[data-on="true"] small{color:var(--cream)}
+.edu-panel{width:min(780px,100%);margin-top:8px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:20px;align-items:center;background:var(--card);border:1px solid var(--sage);border-radius:18px;padding:26px 30px;box-shadow:0 30px 60px #00000066}
+.edu-panel .inner{min-width:0;transition:opacity .35s,transform .35s var(--ease)}
+.edu-panel.swap .inner,.edu-panel.swap .res{opacity:0;transform:translateY(8px)}
+.edu-panel .per{font:500 11px var(--mono);letter-spacing:.1em;color:var(--sage)}
+.edu-panel h3{margin:8px 0 0;font:400 clamp(21px,2.3vw,28px)/1.18 var(--display);color:var(--cream);text-wrap:balance}
+.edu-panel .inst{color:var(--mist);margin-top:6px}
+.edu-panel .note{color:var(--mist);font-size:13px;margin-top:12px}
+.edu-panel .res{text-align:right;transition:opacity .35s,transform .35s var(--ease)}
+.edu-panel .big{font:300 italic clamp(44px,5vw,64px)/1 var(--display);color:var(--sage);font-variant-numeric:tabular-nums;white-space:nowrap}
+.edu-panel .cap{font:500 11px var(--mono);color:var(--mist);margin-top:6px;max-width:190px;margin-left:auto}
+@media (max-width:640px){
+  .edu-pin{padding-top:84px}
+  .edu-arc{height:200px}
+  .ms{width:92px;margin-left:-46px}
+  .ms small{display:none}
+  .ms[data-on="true"] small{display:block}
+  .ms b{font-size:24px} .ms[data-on="true"] b{font-size:30px}
+  .edu-panel{grid-template-columns:minmax(0,1fr);padding:22px}
+  .edu-panel .res{text-align:left}.edu-panel .cap{margin-left:0}
+}
+
+footer{display:flex;justify-content:center;text-align:center;flex-wrap:wrap;gap:8px;margin-top:40px;padding-top:18px;border-top:1px solid #ffffff12;font-size:12.5px;color:var(--mist)}
+
+/* ── Dialog + toast ── */
+.sheet{position:fixed;inset:0;z-index:20;display:grid;place-items:center;padding:16px;background:#0d110fcc;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.sheet[hidden]{display:none}
+.sheet .box{width:min(440px,100%);background:var(--slate-1);border:1px solid var(--line);border-radius:18px;padding:26px}
+.sheet .eyebrow{font:500 10.5px var(--mono);letter-spacing:.24em;text-transform:uppercase;color:var(--sage)}
+.sheet h2{margin:10px 0 8px;font:400 italic 30px/1.1 var(--display);color:var(--cream)}
+.sheet p{margin:0;color:var(--mist)}
+.sheet .actions{display:flex;gap:10px;margin-top:22px}
+.ghost{padding:12px 20px;border-radius:999px;border:1px solid #eef0ea40;background:none;color:var(--cream);font:600 14px var(--body);cursor:pointer}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,12px);opacity:0;z-index:30;
+  background:var(--slate-0);border:1px solid var(--line);color:var(--cream);padding:10px 16px;border-radius:10px;font-size:13px;transition:opacity .3s,transform .3s;pointer-events:none}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* ── Work with me + Contact ── */
+@keyframes pulse{50%{box-shadow:0 0 0 8px #8be0a400}}
+.sec2{padding-block:90px 20px;scroll-margin-top:72px}.sec2 .eyebrow{font:500 11px var(--mono);letter-spacing:.3em;text-transform:uppercase;color:var(--sage)}
+.sec2 h2{margin:12px 0 0;font:300 italic clamp(40px,5vw,60px)/1 var(--display);color:var(--sage)}
+.sec2 .lede{color:var(--mist);max-width:620px;margin-top:14px;font-size:15.5px}
+.avail{display:inline-flex;align-items:center;gap:10px;margin-top:18px;padding:8px 14px;border-radius:999px;border:1px solid #8be0a455;background:#8be0a412;font-size:13px;color:#cdeed8}.avail i{width:8px;height:8px;border-radius:50%;background:#8be0a4;box-shadow:0 0 0 4px #8be0a422;animation:pulse 1.8s infinite}
+.svc{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-top:30px}
+.sv{position:relative;display:flex;flex-direction:column;padding:24px 22px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(160deg,#ffffff08,#ffffff02);transition:transform .4s var(--ease),border-color .4s}
+.sv:hover{transform:translateY(-4px);border-color:var(--sage)}
+.sv .ic{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;border:1px solid var(--sage);color:var(--sage)}.sv .ic svg{width:22px;height:22px}
+.sv h3{margin:16px 0 0;font:400 22px/1.2 var(--display)}.sv p{margin:8px 0 0;color:var(--mist);font-size:13.5px}
+.sv ul{margin:14px 0 0;padding:0;list-style:none;display:grid;gap:6px;font-size:13px;color:#d6dbd3}.sv li::before{content:"✓";color:var(--sage);margin-right:8px}
+.sv .go{margin-top:auto;padding-top:18px;font-weight:600;font-size:13px;color:var(--sage);text-decoration:none}.sv .go:hover{text-decoration:underline}
+.steps2{display:grid;grid-template-columns:repeat(4,1fr);margin-top:26px;border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.steps2 div{padding:16px 18px;border-right:1px solid var(--line)}.steps2 div:last-child{border:0}.steps2 span{display:block;font:400 16px var(--display)}.steps2 small{color:var(--mist);font-size:12px}
+.cc{border:1px solid var(--line);border-radius:18px;background:#1a201d99}
+.cc .k{font:500 10.5px var(--mono);letter-spacing:.2em;color:var(--sage)}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:999px;font:600 13px var(--body);text-decoration:none;border:1px solid #eef0ea40;color:var(--cream);background:none;cursor:pointer}.btn.p{background:var(--sage);color:var(--ink);border-color:var(--sage)}
+.ct3{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:30px}
+.cx{padding:28px}.cx .ci{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;border:1px solid var(--sage);color:var(--sage);margin-bottom:16px}.cx .ci svg{width:22px;height:22px}
+.cx .a{font:400 22px var(--display);margin-top:8px;overflow-wrap:anywhere}.cx .row{display:flex;gap:8px;margin-top:18px;flex-wrap:wrap}
+@media (max-width:1100px){.svc{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:700px){.svc,.ct3{grid-template-columns:minmax(0,1fr)}.steps2{grid-template-columns:1fr 1fr}.steps2 div{border-bottom:1px solid var(--line)}.steps2 div:nth-child(2){border-right:0}.cx{padding:22px}.cx .a{font-size:17px}.sec2{padding-block:64px 10px}}
+/* ── Responsive ── */
+@media (max-width:1100px){
+  nav.main{gap:18px}
+  .focus li{font-size:14px}
+}
+@media (max-width:900px){
+  nav.main{display:none}
+  nav.main.open{display:flex;position:absolute;left:clamp(16px,5vw,72px);right:clamp(16px,5vw,72px);top:72px;z-index:10;flex-direction:column;gap:4px;padding:10px;background:var(--slate-0);border:1px solid var(--line);border-radius:14px}
+  nav.main.open a{padding:10px 12px}
+  .menu-btn{display:grid}
+  .hero{grid-template-columns:minmax(0,1fr);text-align:center;gap:10px}
+  .story{padding-top:4px}
+  .portrait{height:clamp(340px,52vh,460px)}
+  .wheel-wrap{margin-top:-120px}
+  .focus{order:4;justify-self:stretch;padding-top:8px}
+  .focus ul{grid-template-columns:repeat(2,minmax(0,1fr));text-align:left;gap:14px}
+  .focus h2{text-align:center}
+}
+@media (max-width:520px){
+  .resume span{display:none}
+  .wheel{height:250px}
+  .brand{font-size:14px}
+  .social{display:none}
+  nav.main .mob{display:block}
+  .opt h3{font-size:18px}
+  .opt .art{width:36px;height:36px}
+  .focus ul{grid-template-columns:minmax(0,1fr)}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+<body>
+
+<div class="backdrop" aria-hidden="true"></div>
+<div class="page">
+  <header>
+    <span aria-hidden="true"></span>
+    <nav class="main" id="nav" aria-label="Main">
+      <a href="#top" aria-current="page">Home</a>
+      <a href="#education">Education</a>
+      <a href="#work">Work with me</a>
+      <a href="#contact">Contact</a>
+      <a class="mob" href="https://linkedin.com/in/suhas-1710d" target="_blank" rel="noopener">LinkedIn</a>
+      <a class="mob" href="https://github.com/Suhas5497" target="_blank" rel="noopener">GitHub</a>
+    </nav>
+    <div class="tools">
+      <a class="icon-btn social" href="https://linkedin.com/in/suhas-1710d" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 110-4.13 2.06 2.06 0 010 4.13zM7.12 20.45H3.56V9h3.56v11.45z"/></svg></a>
+      <a class="icon-btn social" href="https://github.com/Suhas5497" target="_blank" rel="noopener" aria-label="GitHub"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5a11.5 11.5 0 00-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.56-.29-5.25-1.28-5.25-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 015.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.42-2.7 5.4-5.27 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0012 .5z"/></svg></a>
+      <a class="icon-btn" id="copyEmail" href="mailto:suhasdhamapurkar1710@gmail.com?subject=Hello%20Suhas" target="_blank" rel="noopener" aria-label="Email Suhas at suhasdhamapurkar1710@gmail.com" title="suhasdhamapurkar1710@gmail.com"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></a>
+      <button class="icon-btn menu-btn" id="menuBtn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero" aria-labelledby="name">
+      <div class="story">
+        <div class="hello">Hello, I’m</div>
+        <h1 id="name"><span>Suhas</span><span>Dhamapurkar</span></h1>
+        <p class="tagline">Explore My World of Intelligence.</p>
+        <p class="turn">I turn <span class="flip" aria-hidden="true"><span id="flipA">raw data</span></span> into <span class="flip" aria-hidden="true"><span id="flipB">decisions</span></span>.
+          <span class="sr">I turn raw data into decisions.</span></p>
+        <a class="cta" href="#paths">Explore My Work
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+
+      <div class="portrait"><img src="portrait.webp" alt="Suhas Dhamapurkar" width="1024" height="1536"></div>
+
+      <aside class="focus" aria-labelledby="focus-title">
+        <h2 id="focus-title">What I work on &amp; explore</h2>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V12M10 20V6M16 20v-9M21 20H3"/></svg>Analytics &amp; Business Insights</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4a3 3 0 00-3 3v.5A3 3 0 004 10.5 3 3 0 005 15a3 3 0 003 4h1V4zM15 4a3 3 0 013 3v.5a3 3 0 012 3 3 3 0 01-1 4.5 3 3 0 01-3 4h-1V4z"/></svg>Machine Learning &amp; AI</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M12 12l8-4.5M12 12v9M12 12L4 7.5"/></svg>Computer Vision</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v12c0 1.7 3.1 3 7 3s7-1.3 7-3V6M5 12c0 1.7 3.1 3 7 3s7-1.3 7-3"/></svg>Intelligent Systems</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 21h4M12 3a6 6 0 00-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0012 3z"/></svg>Recommendation Systems</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 010 18M12 3a14 14 0 000 18"/></svg>Real-World Applications</li>
+        </ul>
+      </aside>
+
+      <section class="wheel-wrap" id="paths" aria-label="Choose a portfolio" style="grid-column:1/-1">
+        <div class="wheel" id="wheel" tabindex="-1"></div>
+        <p class="sr" aria-live="polite" id="live"></p>
+      </section>
+    </section>
+    <section class="edu" id="education" aria-labelledby="edu-title">
+      <div class="edu-pin">
+        <h2 id="edu-title">Education</h2>
+        <div class="edu-arc" id="eduArc" role="group" aria-label="Education milestones, oldest to newest"></div>
+        <div class="edu-panel" id="eduPanel" aria-live="polite">
+          <div class="inner"><div class="per" id="eduPer"></div><h3 id="eduTitle"></h3><div class="inst" id="eduInst"></div><div class="note" id="eduNote"></div></div>
+          <div class="res"><div class="big" id="eduBig"></div><div class="cap" id="eduCap"></div></div>
+        </div>
+      </div>
+    </section>
+  <section class="sec2" id="work" aria-labelledby="work-title"><div class="eyebrow">Open for freelance work</div><h2 id="work-title">Work with me</h2>
+      <p class="lede">I help businesses turn data and AI into working products — from a fast website to an assistant that does the repetitive work for you.</p>
+      <span class="avail"><i></i>Available for freelance projects · remote, worldwide</span>
+      <div class="svc"><div class="sv"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M3 8h18M8 21h8"/></svg></div><h3>Business Websites</h3><p>Fast, responsive websites for small businesses and personal brands.</p><ul><li>Custom design, mobile-first</li><li>Contact forms & analytics</li><li>Deployed on your domain</li></ul><a class="go" href="mailto:suhasdhamapurkar1710@gmail.com?subject=Project%20enquiry:%20Business%20Websites" target="_blank" rel="noopener">Discuss this project →</a></div><div class="sv"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="7" width="14" height="11" rx="3"/><path d="M12 3v4M9 12h.01M15 12h.01M9 16h6"/></svg></div><h3>AI Agents & Automation</h3><p>Assistants that take repetitive work off your plate.</p><ul><li>Data entry & report generation</li><li>Website / record checking (QC)</li><li>Human review for edge cases</li></ul><a class="go" href="mailto:suhasdhamapurkar1710@gmail.com?subject=Project%20enquiry:%20AI%20Agents%20%26%20Automation" target="_blank" rel="noopener">Discuss this project →</a></div><div class="sv"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v10H9l-5 4z"/><path d="M8 9h8M8 12h5"/></svg></div><h3>Chatbots</h3><p>Support and sales bots that answer from your own business data.</p><ul><li>Orders, payments & product FAQs</li><li>On your website or chat apps</li><li>Hand-off to a human when unsure</li></ul><a class="go" href="mailto:suhasdhamapurkar1710@gmail.com?subject=Project%20enquiry:%20Chatbots" target="_blank" rel="noopener">Discuss this project →</a></div><div class="sv"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M21 20H3"/></svg></div><h3>Dashboards & Analytics</h3><p>KPI dashboards that show what is happening and what to do next.</p><ul><li>Interactive KPI dashboards</li><li>Clean, validated data pipelines</li><li>Insights & recommendations</li></ul><a class="go" href="mailto:suhasdhamapurkar1710@gmail.com?subject=Project%20enquiry:%20Dashboards%20%26%20Analytics" target="_blank" rel="noopener">Discuss this project →</a></div></div>
+      <div class="steps2"><div><span>Free discovery call</span><small>Understand the problem & goals</small></div><div><span>Proposal &amp; timeline</span><small>Clear scope, milestones, price</small></div><div><span>Build with updates</span><small>Weekly demos, your feedback</small></div><div><span>Launch &amp; support</span><small>Handover, docs, fixes</small></div></div>
+    </section>
+    <section class="sec2" id="contact" aria-labelledby="contact-title"><div class="eyebrow">Contact</div><h2 id="contact-title">Let’s work together</h2>
+      <p class="lede">Have a role, a project or a question? Reach me by email or LinkedIn.</p>
+      <div class="ct3">
+        <div class="cc cx"><div class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></div><div class="k">EMAIL</div><div class="a">suhasdhamapurkar1710@gmail.com</div><div class="row"><a class="btn p" href="mailto:suhasdhamapurkar1710@gmail.com?subject=Hello%20Suhas" target="_blank" rel="noopener">Write an email</a><button class="btn" type="button" id="copyAddr">Copy</button></div></div>
+        <div class="cc cx"><div class="ci"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 110-4.13 2.06 2.06 0 010 4.13zM7.12 20.45H3.56V9h3.56v11.45z"/></svg></div><div class="k">LINKEDIN</div><div class="a">linkedin.com/in/suhas-1710d</div><div class="row"><a class="btn p" href="https://linkedin.com/in/suhas-1710d" target="_blank" rel="noopener">Connect on LinkedIn ↗</a></div></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span>© Suhas Dhamapurkar. All rights reserved.</span>
+  </footer>
+</div>
+
+<div class="sheet" id="sheet" hidden role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+  <div class="box">
+    <div class="eyebrow">Opening portfolio</div>
+    <h2 id="sheetTitle">Data Analyst</h2>
+    <p id="sheetText">This landing page is the first step. The full portfolio page for this path is the next one we build.</p>
+    <div class="actions"><button class="cta" type="button" id="sheetClose" style="margin-top:0">Back to the wheel</button></div>
+  </div>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(() => {
+  const EMAIL = 'suhasdhamapurkar1710@gmail.com';
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ── Toast + copy email ──
+  const toast = document.getElementById('toast');
+  let toastTimer;
+  const say = (msg) => { toast.textContent = msg; toast.classList.add('show'); clearTimeout(toastTimer); toastTimer = setTimeout(() => toast.classList.remove('show'), 2400); };
+  // Opens a new email draft to Suhas; the address is also copied in case no mail app opens.
+  document.getElementById('copyEmail').addEventListener('click', () => {
+    try { navigator.clipboard.writeText(EMAIL).catch(() => {}); } catch {}
+    say('Opening an email draft to ' + EMAIL);
+  });
+
+  // ── Mobile menu ──
+  const nav = document.getElementById('nav'), menuBtn = document.getElementById('menuBtn');
+  menuBtn.addEventListener('click', () => { const o = nav.classList.toggle('open'); menuBtn.setAttribute('aria-expanded', o); menuBtn.setAttribute('aria-label', o ? 'Close menu' : 'Open menu'); });
+  document.getElementById('copyAddr').addEventListener('click', () => {
+    const ok = () => say('Email copied: ' + EMAIL), no = () => say(EMAIL);
+    try { navigator.clipboard.writeText(EMAIL).then(ok, no); } catch { no(); }
+  });
+
+  // ── Flip words ──
+  const A = ['raw data', 'questions', 'messy tables'], B = ['decisions', 'direction', 'forecasts'];
+  const fa = document.getElementById('flipA'), fb = document.getElementById('flipB');
+  let w = 0;
+  const flip = (el, text) => {
+    if (reduced) { el.textContent = text; return; }
+    el.style.transform = 'translateY(-110%)';
+    setTimeout(() => { el.style.transition = 'none'; el.style.transform = 'translateY(110%)'; el.textContent = text; el.getBoundingClientRect(); el.style.transition = ''; el.style.transform = 'none'; }, 330);
+  };
+  setInterval(() => { w = (w + 1) % 3; flip(fa, A[w]); setTimeout(() => flip(fb, B[w]), 160); }, 2800);
+
+  // ── Option wheel ──
+  const ICON = {
+    data: '<path d="M5 20V13M10 20V9M15 20v-5M20 20V5"/>',
+    ai: '<path d="M9 4a3 3 0 00-3 3v.5A3 3 0 004 10.5 3 3 0 005 15a3 3 0 003 4h1V4zM15 4a3 3 0 013 3v.5a3 3 0 012 3 3 3 0 01-1 4.5 3 3 0 01-3 4h-1V4z"/>',
+    hybrid: '<path d="M12 3l9 4.5-9 4.5-9-4.5z"/><path d="M3 12l9 4.5 9-4.5M3 16.5L12 21l9-4.5"/>'
+  };
+  const svg = (d, cls = '') => `<svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
+  const OPTIONS = [
+    { key: 'data', title: 'Data Analyst', line: 'Turning Data Into Decisions' },
+    { key: 'ai', title: 'AI/ML Engineer', line: 'Building Intelligence. Engineering Possibilities.' },
+    { key: 'hybrid', title: 'Hybrid Data + AI', line: 'From Data to Prediction. From Prediction to Action.' }
+  ];
+  const wheel = document.getElementById('wheel'), live = document.getElementById('live');
+  const N = OPTIONS.length;
+  const cards = OPTIONS.map((o, i) => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'opt'; b.dataset.i = i;
+    b.innerHTML = `<div class="top">${svg(ICON[o.key], 'art')}</div>
+      <div class="row"><span class="ic">${svg(ICON[o.key])}</span>
+      <span><h3>${o.title}</h3><p>${o.line}</p></span>
+      <span class="go">${svg('<path d="M5 12h14M13 6l6 6-6 6"/>')}</span></div>`;
+    wheel.appendChild(b);
+    return b;
+  });
+
+  // c = continuous index of the card at the front. Card i sits at angle (i - c) * STEP
+  // on a circle whose centre is above the wheel, so the cards hang on a smile-shaped arc:
+  // moving the left card to the front is an anticlockwise turn, the right card a clockwise turn.
+  let c = 1, target = 1, anim = 0;
+  const wrap = (x) => { let v = ((x + N / 2) % N + N) % N - N / 2; return v; };
+  let narrow = false;
+  function geometry() {
+    const W = wheel.clientWidth;
+    narrow = W < 560;
+    const cw = Math.min(280, Math.max(200, W * 0.3));
+    wheel.style.setProperty('--cw', cw + 'px');
+    const offset = narrow ? W * 0.36 : Math.min(W / 2 - cw / 2 + cw * 0.12, cw * 1.22);
+    // Smaller radius = deeper bowl. The curve must read clearly as a U shape.
+    const R = narrow ? W * 1.15 : Math.max(W * 0.7, 640);
+    const step = Math.asin(Math.min(0.95, offset / R));
+    const rise = R * (1 - Math.cos(step));             // how far the side cards climb
+    const cardH = cards[1].offsetHeight || 150;
+    const base = 14;                                   // top of the front card (the highest point)
+    wheel.style.height = Math.round(base + rise + cardH + 34) + 'px';
+    return { R, step, base, cardH, W };
+  }
+  // Glowing guide line drawn through the card centres, behind the cards.
+  const arc = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  arc.setAttribute('class', 'arc'); arc.setAttribute('aria-hidden', 'true');
+  wheel.prepend(arc);
+  function drawArc() {
+    const { R, step, base, cardH, W } = G, cy = base + cardH / 2, pts = [];
+    for (let k = -1.45; k <= 1.45001; k += 0.05) {
+      const th = k * step;
+      pts.push(`${(W / 2 + R * Math.sin(th)).toFixed(1)},${(cy + R * (1 - Math.cos(th))).toFixed(1)}`);
+    }
+    arc.setAttribute('viewBox', `0 0 ${W} ${wheel.clientHeight}`);
+    arc.innerHTML = `<polyline class="glow" points="${pts.join(' ')}"/><polyline points="${pts.join(' ')}"/>`;
+  }
+  let G = geometry();
+  function place() {
+    cards.forEach((el, i) => {
+      const k = wrap(i - c);                           // slots from the front, in [-1.5, 1.5)
+      const th = k * G.step;
+      const x = G.R * Math.sin(th);
+      const y = G.base + G.R * (1 - Math.cos(th));     // reverse U: the front card sits highest, the sides fall away
+      const near = Math.max(0, 1 - Math.abs(k));       // 1 at the front, 0 one slot away
+      const fade = Math.abs(k) > 1 ? Math.max(0, 1 - (Math.abs(k) - 1) / 0.5) : 1;
+      // Tilt each card along the curve and turn it slightly toward the centre, like a curved screen.
+      el.style.transform = `translate(${x}px, ${y}px) rotate(${th * 0.55}rad) perspective(900px) rotateY(${k * 14}deg) scale(${(narrow ? 0.8 : 0.86) + (narrow ? 0.2 : 0.14) * near})`;
+      el.style.opacity = (0.72 + 0.28 * near) * fade;
+      el.style.zIndex = Math.round(near * 10) + 1;
+      el.style.pointerEvents = fade < 0.3 ? 'none' : '';
+      const front = Math.round(wrap(i - target)) === 0;
+      el.dataset.center = front && Math.abs(k) < 0.5 ? 'true' : 'false';
+      el.setAttribute('aria-label', `${OPTIONS[i].title}: ${OPTIONS[i].line}. ` + (front ? 'Press to open.' : 'Press to bring to the front.'));
+    });
+  }
+  function turnTo(i) {
+    const delta = wrap(i - target);
+    if (Math.abs(delta) < 0.01) return;
+    target = target + delta;
+    live.textContent = `${OPTIONS[((Math.round(target) % N) + N) % N].title} selected`;
+    if (reduced) { c = target; place(); return; }
+    cancelAnimationFrame(anim);
+    const from = c, to = target, t0 = performance.now(), dur = 520 + 260 * Math.abs(to - from);
+    const ease = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+    const tick = (now) => { const t = Math.min(1, (now - t0) / dur); c = from + (to - from) * ease(t); place(); if (t < 1) anim = requestAnimationFrame(tick); };
+    anim = requestAnimationFrame(tick);
+  }
+  const frontIndex = () => ((Math.round(target) % N) + N) % N;
+
+  // Hover intent: dwell briefly on a side card, and only once per cursor visit,
+  // so the wheel never keeps spinning under a resting cursor.
+  let hoverTimer, lastTrigger = null;
+  cards.forEach((el, i) => {
+    el.addEventListener('pointerenter', (e) => {
+      if (e.pointerType !== 'mouse' || i === frontIndex()) return;
+      clearTimeout(hoverTimer);
+      hoverTimer = setTimeout(() => {
+        if (lastTrigger && Math.hypot(e.clientX - lastTrigger.x, e.clientY - lastTrigger.y) < 60) return;
+        lastTrigger = { x: e.clientX, y: e.clientY };
+        turnTo(i);
+      }, 220);
+    });
+    el.addEventListener('pointerleave', () => clearTimeout(hoverTimer));
+    el.addEventListener('click', () => { i === frontIndex() ? openPath(i) : turnTo(i); });
+  });
+  wheel.addEventListener('pointerleave', () => { lastTrigger = null; });
+  wheel.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') { e.preventDefault(); turnTo(frontIndex() - 1); cards[((frontIndex()) % N + N) % N].focus(); }
+    if (e.key === 'ArrowRight') { e.preventDefault(); turnTo(frontIndex() + 1); cards[((frontIndex()) % N + N) % N].focus(); }
+  });
+
+  // ── Open (placeholder until the portfolio pages exist) ──
+  const sheet = document.getElementById('sheet');
+  let lastFocus;
+  function openPath(i) {
+    if (OPTIONS[i].key === 'data') { location.href = 'data-analyst.html'; return; }
+    if (OPTIONS[i].key === 'ai') { location.href = 'ai-ml.html'; return; }
+    if (OPTIONS[i].key === 'hybrid') { location.href = 'hybrid.html'; return; }
+    lastFocus = document.activeElement;
+    document.getElementById('sheetTitle').textContent = OPTIONS[i].title;
+    sheet.hidden = false;
+    document.getElementById('sheetClose').focus();
+  }
+  const closeSheet = () => { sheet.hidden = true; lastFocus && lastFocus.focus(); };
+  document.getElementById('sheetClose').addEventListener('click', closeSheet);
+  sheet.addEventListener('click', (e) => { if (e.target === sheet) closeSheet(); });
+  addEventListener('keydown', (e) => { if (e.key === 'Escape' && !sheet.hidden) closeSheet(); });
+
+  addEventListener('resize', () => { G = geometry(); drawArc(); place(); });
+
+  // ── Sticky header state + menu highlight ──
+  const header = document.querySelector('header');
+  const navLinks = [...nav.querySelectorAll('a[href^="#"]')];
+  const eduSec = document.getElementById('education');
+  function onScrollUI() {
+    header.classList.toggle('scrolled', scrollY > 10);
+    let cur = '#top';
+    for (const id of ['education', 'work', 'contact']) if (document.getElementById(id).getBoundingClientRect().top < innerHeight * 0.5) cur = '#' + id;
+    if (innerHeight + scrollY >= document.documentElement.scrollHeight - 4) cur = '#contact';
+    navLinks.forEach((a) => {
+      const on = a.getAttribute('href') === cur;
+      on ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current');
+    });
+  }
+  navLinks.forEach((a) => a.addEventListener('click', (e) => {
+    const t = document.querySelector(a.getAttribute('href'));
+    if (!t) return;
+    e.preventDefault();
+    nav.classList.remove('open'); menuBtn.setAttribute('aria-expanded', 'false');
+    const y = a.getAttribute('href') === '#top' ? 0 : t.getBoundingClientRect().top + scrollY;
+    scrollTo({ top: y, behavior: reduced ? 'auto' : 'smooth' });
+  }));
+
+  // ── Education: milestone arc ──
+  // Milestones sit on the same reverse-U arc as the home wheel. Scrolling through the
+  // pinned section turns the arc so each year climbs to the top, oldest to newest.
+  const EDU = [
+    { year: '2019', label: 'Class X', per: '2017 – 2019', title: 'Class X', inst: 'Jawahar Navodaya Vidyalaya, Ratnagiri', note: 'CBSE Board', value: 80, fmt: (v) => Math.round(v) + '%', cap: 'CBSE · Class X' },
+    { year: '2021', label: 'Class XII · PCM', per: '2019 – 2021', title: 'Class XII · Science (PCM)', inst: 'Jawahar Navodaya Vidyalaya, Ratnagiri', note: '2nd rank at regional level, Navodaya Vidyalaya Samiti Mathematics Exhibition (Class XI)', value: 82, fmt: (v) => Math.round(v) + '%', cap: 'CBSE · PCM' },
+    { year: '2025', label: 'B.Tech · CSE (AI & ML)', per: '2021 – 2025', title: 'B.Tech in Computer Science — AI & ML specialisation', inst: 'Kolhapur Institute of Technology, Kolhapur', note: 'Specialisation in Artificial Intelligence & Machine Learning', value: 7.45, fmt: (v) => v.toFixed(2), cap: 'CGPA / 10' },
+    { year: '2026', label: 'PG · Data Science', per: 'Aug 2025 – May 2026', title: 'Post Graduate Program in Data Science & Analytics', inst: 'Imarticus Learning, Pune', note: 'Capstone: E-Commerce Business Analytics (SQL & Power BI)', value: 5, fmt: (v) => 'Top ' + Math.round(v) + '%', cap: '8th of 150+ · Imarticus Data Science Hackathon, Apr 2026' }
+  ];
+  const eduArc = document.getElementById('eduArc'), panel = document.getElementById('eduPanel');
+  const $ = (id) => document.getElementById(id);
+  const eduSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  eduSvg.setAttribute('aria-hidden', 'true'); eduArc.appendChild(eduSvg);
+  const ms = EDU.map((m, i) => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'ms';
+    b.innerHTML = `<span class="d"></span><b>${m.year}</b><small>${m.label}</small>`;
+    b.setAttribute('aria-label', `${m.year}: ${m.title}`);
+    b.addEventListener('click', () => goEdu(i));
+    eduArc.appendChild(b);
+    return b;
+  });
+  let eg = {}, ec = 0, shown = -1, countAnim = 0;
+  function eduGeometry() {
+    const W = eduArc.clientWidth, narrow = W < 640;
+    const R = narrow ? W * 1.1 : Math.max(W * 0.62, 620);
+    const gap = narrow ? W * 0.27 : Math.min(240, W * 0.18);
+    eg = { W, R, step: Math.asin(Math.min(0.9, gap / R)), top: 18 };
+    const pts = [];
+    for (let k = -2.4; k <= 2.4001; k += 0.05) { const th = k * eg.step; pts.push(`${(W / 2 + R * Math.sin(th)).toFixed(1)},${(eg.top + 8 + R * (1 - Math.cos(th))).toFixed(1)}`); }
+    eduSvg.setAttribute('viewBox', `0 0 ${W} ${eduArc.clientHeight}`);
+    eduSvg.innerHTML = `<polyline class="glow" points="${pts.join(' ')}"/><polyline points="${pts.join(' ')}"/><polyline class="lit" id="eduLit" points=""/>`;
+  }
+  // The arc turns so the active year sits at the top centre (like the home wheel).
+  // The lit line runs from the first year (2019) to the centre: how far along the journey you are.
+  const arcPoint = (k) => { const th = k * eg.step; return { x: eg.R * Math.sin(th), y: eg.top + eg.R * (1 - Math.cos(th)), th }; };
+  function eduPlace() {
+    ms.forEach((el, i) => {
+      const k = i - ec;
+      const { x, y, th } = arcPoint(k);
+      const fade = Math.max(0, 1 - Math.max(0, Math.abs(k) - 1.7) / 0.6);
+      el.style.transform = `translate(${x}px, ${y}px) rotate(${th * 0.6}rad)`;
+      el.style.opacity = fade;
+      el.style.pointerEvents = fade < 0.3 ? 'none' : '';
+      el.dataset.on = Math.round(ec) === i ? 'true' : 'false';
+    });
+    const lit = document.getElementById('eduLit');
+    if (lit) {
+      const pts = [];
+      for (let k = -ec; k <= 0.0001; k += 0.04) { const q = arcPoint(k); pts.push(`${(eg.W / 2 + q.x).toFixed(1)},${(q.y + 8).toFixed(1)}`); }
+      const c0 = arcPoint(0); pts.push(`${(eg.W / 2 + c0.x).toFixed(1)},${(c0.y + 8).toFixed(1)}`);
+      lit.setAttribute('points', pts.join(' '));
+    }
+    const idx = Math.max(0, Math.min(EDU.length - 1, Math.round(ec)));
+    if (idx !== shown) showEdu(idx);
+  }
+  function showEdu(i) {
+    const first = shown < 0; shown = i;
+    const m = EDU[i];
+    const fill = () => {
+      $('eduPer').textContent = m.per; $('eduTitle').textContent = m.title; $('eduInst').textContent = m.inst;
+      $('eduNote').textContent = m.note; $('eduCap').textContent = m.cap;
+      cancelAnimationFrame(countAnim);
+      if (reduced || first) { $('eduBig').textContent = m.fmt(m.value); return; }
+      const t0 = performance.now();
+      const tick = (now) => { const t = Math.min(1, (now - t0) / 700); $('eduBig').textContent = m.fmt(m.value * (1 - Math.pow(1 - t, 3))); if (t < 1) countAnim = requestAnimationFrame(tick); };
+      countAnim = requestAnimationFrame(tick);
+    };
+    if (reduced || first) { fill(); return; }
+    panel.classList.add('swap');
+    setTimeout(() => { fill(); panel.classList.remove('swap'); }, 180);
+  }
+  // Scroll progress through the pinned section → arc position (0 … 3)
+  function eduProgress() {
+    const r = eduSec.getBoundingClientRect();
+    const travel = eduSec.offsetHeight - innerHeight;
+    const p = travel > 0 ? Math.min(1, Math.max(0, -r.top / travel)) : 0;
+    return p * (EDU.length - 1);
+  }
+  // Bring year i to the centre. While the section is pinned, this scrolls to that year's
+  // point (the page itself doesn't move), so hover and scroll always agree and the last
+  // hovered year stays in the centre. Outside the pinned range, the arc turns on its own.
+  let tween = 0;
+  function turnEdu(i) {
+    cancelAnimationFrame(tween);
+    if (reduced) { ec = i; eduPlace(); return; }
+    const from = ec, t0 = performance.now(), dur = 450 + 220 * Math.abs(i - from);
+    const step = (now) => { const t = Math.min(1, (now - t0) / dur); const e = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; ec = from + (i - from) * e; eduPlace(); if (t < 1) tween = requestAnimationFrame(step); };
+    tween = requestAnimationFrame(step);
+  }
+  function goEdu(i) {
+    const r = eduSec.getBoundingClientRect();
+    const pinned = r.top <= 1 && r.bottom >= innerHeight - 1;
+    if (!pinned) { turnEdu(i); return; }
+    cancelAnimationFrame(tween);
+    const travel = eduSec.offsetHeight - innerHeight;
+    const y = r.top + scrollY + (travel * i) / (EDU.length - 1) + 1;
+    scrollTo({ top: y, behavior: reduced ? 'auto' : 'smooth' });
+  }
+  // Hover intent: a short dwell, and only once per spot, so the year that slides
+  // under a resting mouse doesn't set the arc spinning.
+  let eduHover, eduLast = null;
+  ms.forEach((el, i) => {
+    el.addEventListener('pointerenter', (e) => {
+      if (e.pointerType !== 'mouse') return;
+      clearTimeout(eduHover);
+      eduHover = setTimeout(() => {
+        if (i === shown) return;
+        if (eduLast && Math.hypot(e.clientX - eduLast.x, e.clientY - eduLast.y) < 40) return;
+        eduLast = { x: e.clientX, y: e.clientY };
+        goEdu(i);
+      }, 160);
+    });
+    el.addEventListener('pointerleave', () => clearTimeout(eduHover));
+  });
+  eduArc.addEventListener('pointerleave', () => { eduLast = null; });
+  eduArc.addEventListener('keydown', (e) => {
+    if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+    e.preventDefault();
+    const n = Math.max(0, Math.min(EDU.length - 1, shown + (e.key === 'ArrowRight' ? 1 : -1)));
+    goEdu(n); ms[n].focus({ preventScroll: true });
+  });
+  let ticking = false;
+  addEventListener('scroll', () => {
+    if (ticking) return; ticking = true;
+    requestAnimationFrame(() => { ticking = false; onScrollUI(); cancelAnimationFrame(tween); ec = eduProgress(); eduPlace(); });
+  }, { passive: true });
+  addEventListener('resize', () => { eduGeometry(); ec = eduProgress(); eduPlace(); });
+  eduGeometry(); ec = eduProgress(); eduPlace(); onScrollUI();
+  place();
+  G = geometry(); drawArc(); place();
+  document.fonts && document.fonts.ready.then(() => { G = geometry(); drawArc(); place(); });
+})();
+</script>
+</body>
+</html>

@@ -124,6 +124,10 @@ nav.main a:hover,nav.main a[aria-current]{color:var(--cream)}nav.main a:hover::a
 #res{position:absolute;inset:0;display:none}
 .rhead{position:absolute;left:40px;right:40px;top:52px;display:flex;justify-content:space-between;align-items:flex-end}
 .rhead h3{margin:0;font:300 italic 28px/1 var(--display);color:var(--cream)}.rhead h3 b{font-style:normal;font-weight:400;color:var(--gold)}
+.rmeta{display:flex;align-items:center;gap:14px;flex:none}
+.golive{position:relative;z-index:3;display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border:1px solid var(--gold);border-radius:999px;background:#00000055;color:var(--gold);font:500 11.5px var(--body,Inter);text-decoration:none;letter-spacing:.02em;pointer-events:auto;transition:background .25s,color .25s}
+.golive:hover,.golive:focus-visible{background:var(--gold);color:#111}
+.golive svg{width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2}
 .rhead small{font-size:9.5px;letter-spacing:.2em;color:var(--mist)}
 .steps4{position:absolute;left:40px;right:40px;top:98px;display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
 .steps4 div{padding:8px 10px;border:1px solid #ffffff14;border-radius:9px;font-size:9.5px;color:#6f757d;transition:all .45s;position:relative;overflow:hidden}
@@ -332,7 +336,7 @@ footer{display:flex;justify-content:center;margin-top:70px;padding-block:18px 28
             </div>
             <!-- 02 · Resilytics -->
             <div id="res">
-              <div class="rhead"><h3><b>Resilytics</b> · AI-Powered Decision Intelligence</h3><small>SAMPLE COMPANY DATA</small></div>
+              <div class="rhead"><h3 style="font-size:23px"><b>Resilytics</b> · AI-Powered Decision Intelligence</h3><div class="rmeta"><a class="golive" href="https://resilytics.in" target="_blank" rel="noopener">resilytics.in <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg></a><small>SAMPLE COMPANY DATA</small></div></div>
               <div class="steps4" id="rsteps"><div>01 · NOW<b>What is happening?</b><i></i></div><div>02 · CAUSE<b>Why is it happening?</b><i></i></div><div>03 · FUTURE<b>What could happen next?</b><i></i></div><div>04 · ACTION<b>What should we do?</b><i></i></div></div>
               <div class="rpanel" id="rp0"><div class="rq">Raw data in<small>INGEST → VALIDATE → WAREHOUSE → ENGINE</small></div><div class="file" id="rfile">⬆ sales_2025.csv</div>
                 <div class="pipe" id="rpipe"><div class="nd"><span>⬆</span>Ingest</div><div class="ln"><i></i></div><div class="nd"><span>✓</span>Schema check</div><div class="ln"><i></i></div><div class="nd"><span>▦</span>Warehouse</div><div class="ln"><i></i></div><div class="nd"><span>◎</span>Risk engine</div></div></div>
@@ -380,7 +384,7 @@ footer{display:flex;justify-content:center;margin-top:70px;padding-block:18px 28
             </div>
             <!-- 04 · AI chatbot & LLM applications -->
             <div id="bot">
-              <div class="rhead"><h3 style="font-size:23px"><b>AI Chatbot</b> · LLM Applications</h3><small>SAMPLE STORE DATA</small></div>
+              <div class="rhead"><h3 style="font-size:23px"><b>AI Chatbot</b> · LLM Applications</h3><div class="rmeta"><a class="golive" href="https://goodfoods-agent-l.streamlit.app/" target="_blank" rel="noopener" title="GoodFoods Gia: an LLM reservation agent">Try GoodFoods Gia live <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg></a><small>SAMPLE STORE DATA</small></div></div>
               <div class="chatw"><div class="top"><span class="av">AI</span><div><b>Store Assistant</b><small>● online · replies instantly</small></div></div>
                 <div class="msgs" id="msgs"></div><div class="inp"><span id="inp">Type a message…</span><b>↑</b></div></div>
               <div class="brain">

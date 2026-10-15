@@ -154,7 +154,7 @@ nav.main a:hover,nav.main a[aria-current]{color:var(--cream)}nav.main a:hover::a
 .recs .tg{display:flex;gap:6px}.recs .tg span{font-size:9px;padding:3px 8px;border-radius:999px;border:1px solid #ffffff22;color:var(--mist)}.recs .tg span.h{border-color:var(--gold);color:var(--gold)}
 .final{position:absolute;left:0;right:0;bottom:0;text-align:center;font:300 italic 17px var(--display);color:var(--gold);opacity:0;transition:opacity .6s}.final.on{opacity:1}
 
-/* 03 · Amber QC automation demo */
+/* 03 · Listing QC automation demo */
 #qc{position:absolute;inset:0;display:none}
 .qsteps{position:absolute;left:40px;right:40px;top:98px;display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
 .qsteps div{padding:7px 8px;border:1px solid #ffffff14;border-radius:8px;font-size:9px;line-height:1.3;color:#6f757d;transition:all .4s}
@@ -299,7 +299,7 @@ footer{display:flex;justify-content:center;margin-top:70px;padding-block:18px 28
         <ol class="plist" id="plist">
           <li><button type="button" data-p="0" aria-pressed="true"><span class="n">01</span><span class="t">SPA Project</span><span class="s">Personal AI assistant that automates computer work</span></button></li>
           <li><button type="button" data-p="1" aria-pressed="false"><span class="n">02</span><span class="t">Resilytics — AI Business Intelligence</span><span class="s">AI-powered decision intelligence platform</span></button></li>
-          <li><button type="button" data-p="2" aria-pressed="false"><span class="n">03</span><span class="t">Amber QC Automation</span><span class="s">Automated property data verification</span></button></li>
+          <li><button type="button" data-p="2" aria-pressed="false"><span class="n">03</span><span class="t">Listing QC Automation</span><span class="s">Automated property data verification</span></button></li>
           <li><button type="button" data-p="3" aria-pressed="false"><span class="n">04</span><span class="t">AI Chatbot &amp; LLM Applications</span><span class="s">Support, payments, products &amp; system updates</span></button></li>
         </ol>
         <div class="stagewrap" id="stagewrap" aria-live="polite">
@@ -351,15 +351,15 @@ footer{display:flex;justify-content:center;margin-top:70px;padding-block:18px 28
                   <li><span class="rk">3</span><div><b>Grow the second-best region</b><p>Reduces single-region dependence and adds growth.</p></div><div class="tg"><span>MEDIUM</span><span>growth</span></div></li>
                 </ol><div class="final" id="rfinal">From reporting what happened → to deciding what to do.</div></div>
             </div>
-            <!-- 03 · Amber QC automation -->
+            <!-- 03 · Listing QC automation -->
             <div id="qc">
-              <div class="rhead"><h3 style="font-size:23px"><b>Amber QC Automation</b> · Property Data Verification</h3><small>ILLUSTRATIVE DATA</small></div>
-              <div class="qsteps" id="qsteps"><div>01<b>Read reference</b></div><div>02<b>Identify on Amber</b></div><div>03<b>Extract both sources</b></div><div>04<b>Normalize &amp; compare</b></div><div>05<b>QC decision</b></div><div>06<b>Evidence report</b></div></div>
+              <div class="rhead"><h3 style="font-size:23px"><b>Listing QC Automation</b> · Property Data Verification</h3><small>ILLUSTRATIVE DATA</small></div>
+              <div class="qsteps" id="qsteps"><div>01<b>Read reference</b></div><div>02<b>Identify on platform</b></div><div>03<b>Extract both sources</b></div><div>04<b>Normalize &amp; compare</b></div><div>05<b>QC decision</b></div><div>06<b>Evidence report</b></div></div>
               <div class="qp" id="qp0"><div class="xl" id="xl"><div class="wt">property_reference.xlsx</div><table><tr><th>Property ID</th><th>Property name</th><th>City</th><th>Website</th></tr>
                 <tr><td>P-1041</td><td>Sample Court</td><td>Leeds</td><td>sample-court.example</td></tr><tr id="xrow"><td>P-1042</td><td>Sample Residence</td><td>Glasgow</td><td>sample-residence.example</td></tr><tr><td>P-1043</td><td>Sample House</td><td>Bristol</td><td>sample-house.example</td></tr></table></div>
                 <div class="qcap" id="qcap">Reading the reference file…</div></div>
               <div class="qp" id="qp1"><div class="two">
-                <div class="src" id="srcA"><div class="wt"><b>Amber listing</b> · P-1042</div><div class="url">amberstudent.com/… · matched by ID + name ✓</div>
+                <div class="src" id="srcA"><div class="wt"><b>Platform listing</b> · P-1042</div><div class="url">listing-platform.example/… · matched by ID + name ✓</div>
                   <div class="f">Room type <span>Ensuite</span></div><div class="f">Price <span>£220 / week</span></div><div class="f">Availability <span>Available</span></div><div class="f">Amenity <span>Gym included</span></div><div class="scan"></div></div>
                 <div class="src" id="srcB"><div class="wt"><b>Official property website</b></div><div class="url">sample-residence.example/rooms</div>
                   <div class="f">Room <span>Private ensuite room</span></div><div class="f">Rent <span>£240 per week</span></div><div class="f">Status <span>SOLD OUT</span></div><div class="f">Facilities <span>“fitness area (terms apply)”</span></div><div class="scan"></div></div></div>
@@ -370,7 +370,7 @@ footer{display:flex;justify-content:center;margin-top:70px;padding-block:18px 28
                 <div class="nr"><span class="k">AVAILABILITY</span><span class="v">Available<i>→ available</i></span><span class="eq">≠</span><span class="v">SOLD OUT<i>→ sold_out</i></span><span class="m">status mismatch</span></div>
                 <div class="nr"><span class="k">AMENITY · GYM</span><span class="v">Gym included<i>→ gym: included</i></span><span class="eq">?</span><span class="v">fitness area (terms apply)<i>→ AI: gym, conditions unclear</i></span><span class="m">low confidence → human</span></div></div></div>
               <div class="qp" id="qp3"><div class="res"><div>
-                <div class="rt" id="rt"><div class="row hd"><span>FIELD</span><span>AMBER</span><span>WEBSITE</span><span>RESULT</span></div>
+                <div class="rt" id="rt"><div class="row hd"><span>FIELD</span><span>PLATFORM</span><span>WEBSITE</span><span>RESULT</span></div>
                   <div class="row" data-e="0"><span>Room type</span><span>Ensuite</span><span>Ensuite</span><em class="qpill p-ok">CORRECT</em></div>
                   <div class="row" data-e="1"><span>Price</span><span>£220/week</span><span>£240/week</span><em class="qpill p-bad">INCORRECT</em></div>
                   <div class="row" data-e="2"><span>Availability</span><span>Available</span><span>Sold out</span><em class="qpill p-bad">INCORRECT</em></div>
@@ -563,15 +563,15 @@ footer{display:flex;justify-content:center;margin-top:70px;padding-block:18px 28
     await sleep(3000); if (ok() && current === 1) playRes();
   }
 
-  // ── 03 · Amber QC automation: reference → two sources → normalise → decide → evidence (illustrative values) ──
+  // ── 03 · Listing QC automation: reference → two sources → normalise → decide → evidence (illustrative values) ──
   const EV = [
     { f: 'Room type', r: 'CORRECT', a: 'Ensuite', w: 'Private ensuite room', why: '“Private ensuite room” normalises to the same configuration as “Ensuite”. Equivalent meaning, not just matching text.' },
-    { f: 'Price', r: 'INCORRECT', a: '£220 / week', w: '£240 per week', why: 'Both are weekly GBP prices after normalisation, but the amounts differ by £20. Amber listing needs updating.' },
-    { f: 'Availability', r: 'INCORRECT', a: 'Available', w: 'SOLD OUT', why: 'Sold out is the property’s state; the QC result is INCORRECT because Amber’s status does not match the verified source.' },
+    { f: 'Price', r: 'INCORRECT', a: '£220 / week', w: '£240 per week', why: 'Both are weekly GBP prices after normalisation, but the amounts differ by £20. The platform listing needs updating.' },
+    { f: 'Availability', r: 'INCORRECT', a: 'Available', w: 'SOLD OUT', why: 'Sold out is the property’s state; the QC result is INCORRECT because the platform’s status does not match the verified source.' },
     { f: 'Amenity · gym', r: 'NEED_REVIEW', a: 'Gym included', w: '“fitness area (terms apply)”', why: 'AI reads this as a gym with conditions, but confidence is low — the system flags it for a human instead of guessing.' }];
   function showEv(i) {
     document.querySelectorAll('#rt .row[data-e]').forEach((r) => r.classList.toggle('sel', +r.dataset.e === i)); const e = EV[i];
-    $('ev').innerHTML = `<h5>${e.f} · ${e.r}</h5><div class="kv"><span>Amber</span><b>${e.a}</b><span>Website</span><b>${e.w}</b><span>Source</span><b>sample-residence.example/rooms</b><span>Captured</span><b>2026-06-12 10:42 UTC</b></div><div class="shot">${e.r === 'CORRECT' ? '' : '<i></i>'}</div><div class="why">${e.why}</div>${e.r === 'NEED_REVIEW' ? '<div class="human">→ Sent to QC reviewer</div>' : ''}`;
+    $('ev').innerHTML = `<h5>${e.f} · ${e.r}</h5><div class="kv"><span>Platform</span><b>${e.a}</b><span>Website</span><b>${e.w}</b><span>Source</span><b>sample-residence.example/rooms</b><span>Captured</span><b>2026-06-12 10:42 UTC</b></div><div class="shot">${e.r === 'CORRECT' ? '' : '<i></i>'}</div><div class="why">${e.why}</div>${e.r === 'NEED_REVIEW' ? '<div class="human">→ Sent to QC reviewer</div>' : ''}`;
     $('ev').classList.add('on');
   }
   document.querySelectorAll('#rt .row[data-e]').forEach((r) => r.addEventListener('click', () => showEv(+r.dataset.e)));
@@ -587,7 +587,7 @@ footer{display:flex;justify-content:center;margin-top:70px;padding-block:18px 28
     const my = ++alive; const ok = () => my === alive; resetQC(); $('stTag').innerHTML = '<i></i>QC · RUNNING';
     // 1 · read reference, 2 · identify
     qstep(0); qshow(0); await sleep(900); if (!ok()) return; $('xrow').classList.add('hl'); $('qcap').innerHTML = 'Next property: <b>P-1042 · Sample Residence</b>'; await sleep(1100); if (!ok()) return;
-    qstep(1); $('qcap').innerHTML = 'Finding it on Amber by <b>property ID + name</b>…'; await sleep(1200); if (!ok()) return;
+    qstep(1); $('qcap').innerHTML = 'Finding it on the platform by <b>property ID + name</b>…'; await sleep(1200); if (!ok()) return;
     $('xl').style.transform = 'scale(.85) translateY(-30px)'; $('xl').style.opacity = 0; await sleep(500); if (!ok()) return;
     // 3 · extract both sources in parallel
     qstep(2); qshow(1); await sleep(400);
@@ -653,7 +653,7 @@ footer{display:flex;justify-content:center;margin-top:70px;padding-block:18px 28
   // Projects 02–04: placeholders until their animations are built
   const INFO = [null,
     { k: '02 · RESILYTICS', h: 'AI Business Intelligence', p: 'Raw business data in → validated, analysed, risk-scored (VaR-95, HHI, Altman Z) → an AI Copilot that answers questions about it. Animation coming next.' },
-    { k: '03 · AMBER AUTOMATION', h: 'Amber Automation', p: 'Animation coming next — send me what Amber Automation does and I’ll build its demo.' },
+    { k: '03 · LISTING QC AUTOMATION', h: 'Listing QC Automation', p: 'Automated property data verification.' },
     { k: '04 · AI CHATBOT & LLM APPS', h: 'AI Chatbot & LLM Applications', p: 'Animation coming next — send me the chatbot / LLM apps to feature and I’ll build their demo.' }];
   let current = 0;
   const btns = [...document.querySelectorAll('#plist button')];
